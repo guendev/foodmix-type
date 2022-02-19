@@ -1,11 +1,10 @@
-import './pre-start'; // import env
+import './environment'; // import env
 
 import express, { Request } from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import http, { Server } from 'http'
-
 import { ApolloServer } from "apollo-server-express"
 import { execute, subscribe } from 'graphql'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
@@ -13,7 +12,8 @@ import { SubscriptionServer } from 'subscriptions-transport-ws'
 
 import schema from './graphql'
 import database from './database'
-import routes from "./routes";
+import routes from "./routes"
+import authMiddleware from './middleware/auth.middleware'
 
 
 // crosss
@@ -43,6 +43,7 @@ async function startApolloServer() : Promise<void> {
     /***********************************************************************************
      *                                  Global Middleware
      **********************************************************************************/
+    app.use(authMiddleware)
 
     /***********************************************************************************
      *                                  Router

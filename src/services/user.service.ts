@@ -1,4 +1,4 @@
-import {IUser, User} from '@models/user-model'
+import {IUser, User} from '@models/user'
 import { SortOptions } from "@utils/sort"
 
 class UserService {

@@ -92,6 +92,9 @@
       ],
       "@validator/*": [
         "src/validator/*"
+      ],
+      "@middleware/*": [
+        "src/middleware/*"
       ]
     },
     "useUnknownInCatchVariables": false,
