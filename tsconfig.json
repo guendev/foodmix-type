@@ -69,6 +69,9 @@
       "@graphql/*": [
         "src/graphql/*"
       ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
       "@models/*": [
         "src/models/*"
       ],
@@ -83,9 +86,17 @@
       ],
       "@routes/*": [
         "src/routes/*"
+      ],
+      "@controllers/*": [
+        "src/controllers/*"
+      ],
+      "@validator/*": [
+        "src/validator/*"
       ]
     },
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "typeRoots": [
+      "src/@types", "node_modules/@types"]
   },
   "include": [
     "src/**/*.ts",
