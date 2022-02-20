@@ -1,9 +1,4 @@
-import './environment'; // import env
-
-import express, { Request } from 'express'
-import path from 'path'
-import cookieParser from 'cookie-parser'
-import cors from 'cors'
+import {Express, Request} from 'express'
 import http, { Server } from 'http'
 import { ApolloServer } from "apollo-server-express"
 import { execute, subscribe } from 'graphql'
@@ -11,45 +6,11 @@ import { SubscriptionServer } from 'subscriptions-transport-ws'
 
 
 import schema from './graphql'
-import database from './database'
-import routes from "./routes"
-import authMiddleware from './middleware/auth.middleware'
-
-
-// crosss
-const whitelist: [string] = ['']
-if (process.env.NODE_ENV !== 'production') {
-    whitelist.push(
-        ...[
-            'https://studio.apollographql.com'
-        ]
-    )
-}
-const corsOptions: cors.CorsOptions = {
-    origin: whitelist
-}
+import initServer from "@server";
 
 async function startApolloServer() : Promise<void> {
-    // chạy database
-    await database.run()
-    // khởi tạo express
-    const app = express()
-    app.use(cors(corsOptions))
-    app.use(express.json())
-    app.use(express.urlencoded({ extended: false }))
-    app.use(cookieParser())
-    app.use(express.static(path.join(__dirname, 'public')))
 
-    /***********************************************************************************
-     *                                  Global Middleware
-     **********************************************************************************/
-    app.use(authMiddleware)
-
-    /***********************************************************************************
-     *                                  Router
-     **********************************************************************************/
-    app.use('/api', routes)
-
+    const app: Express = await initServer()
 
     /***********************************************************************************
      *                                  HTTP Server
