@@ -41,10 +41,6 @@ interface IStepper {
     image: string
 }
 
-interface IRecipeCreateInput extends IRecipeInput{
-    user: Types.ObjectId
-}
-
 interface IRecipeInput {
     name: string,
     avatar: string,
@@ -56,10 +52,20 @@ interface IRecipeInput {
     preparation: string
 }
 
+const IRecipeInputKeys: string[] = ["name", "avatar", "content", "category", "ingredients", "stepper", "time", "preparation"]
+
+interface IRecipeCreateInput extends IRecipeInput{
+    user: Types.ObjectId
+}
+
+const IRecipeCreateInputKeys: string[] = [...IRecipeInputKeys, "users"]
+
 export {
     RecipeService,
     IIngredient,
     IStepper,
     IRecipeInput,
-    IRecipeCreateInput
+    IRecipeCreateInput,
+    IRecipeInputKeys,
+    IRecipeCreateInputKeys
 }

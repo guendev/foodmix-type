@@ -1,15 +1,16 @@
-import {IRecipeCreateInput, IRecipeInput, RecipeService} from "@services/recipe.service";
+import {IRecipeCreateInput, IRecipeInput, IRecipeInputKeys, RecipeService} from "@services/recipe.service";
 import {Request, Response} from "express";
 import StatusCodes from "http-status-codes";
 import {IRecipe} from "@models/recipe";
 import {NotifyResponse, ResponseError, ResponseSuccess} from "@utils/response";
 import { ICategory } from "@models/category";
 import {CategoryService} from "@services/category.service";
+import transformerKey from "@shared/transformer";
 
 const { OK, FORBIDDEN } = StatusCodes
 
 const create = async (req: Request, res: Response): Promise<Response> => {
-    const form: IRecipeInput = req.body
+    const form: IRecipeInput = transformerKey<IRecipeInput>(req.body,IRecipeInputKeys)
 
     const category: ICategory|null = await CategoryService.getOne({ slug: form.category })
     if(!category) {

@@ -2,9 +2,10 @@ import {Request, Response} from "express";
 import StatusCodes from "http-status-codes";
 import {ParamsDictionary} from "express-serve-static-core";
 
-import {CategoryService, ICategoryInput} from "@services/category.service";
+import {CategoryService, ICategoryInput, ICategoryInputKeys} from "@services/category.service";
 import {ICategory} from "@models/category";
 import {NotifyResponse, ResponseError, ResponseSuccess} from "@utils/response";
+import transformerKey from "@shared/transformer";
 
 const { OK, NOT_FOUND } = StatusCodes
 
@@ -23,9 +24,8 @@ const getOne = async (req: Request, res: Response) => {
     return res.status(OK).json(new ResponseSuccess(category))
 }
 
-// Todo: Chuyển vào admin router
 const create = async (req: Request, res: Response) => {
-    const form: ICategoryInput = req.body
+    const form: ICategoryInput = transformerKey<ICategoryInput>(req.body, ICategoryInputKeys)
     const category = await CategoryService.create(form)
     return res.status(OK).json(new ResponseSuccess(category, 'Tạo mới thành công', NotifyResponse.NOTIFY))
 }

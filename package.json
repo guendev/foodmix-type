@@ -79,7 +79,8 @@
     "module-alias": "^2.2.2",
     "mongoose": "^6.2.2",
     "mongoose-slug-generator": "^1.0.4",
-    "subscriptions-transport-ws": "^0.11.0"
+    "subscriptions-transport-ws": "^0.11.0",
+    "ts-transformer-keys": "^0.4.3"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.2.0",
