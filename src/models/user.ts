@@ -100,4 +100,4 @@ schema.virtual('rating').get(function (this: IUser): number {
     return this.totalRating / this.countRating
 })
 
-export const User = model<IUser>('IUser', schema)
+export const User = model<IUser>('User', schema)
