@@ -12,7 +12,7 @@ const router = Router();
 // Paths
 export const p = {
     getAll: '/all',
-    getOne: '/single/:slug',
+    getOne: '/single/:id',
     create: '/single'
 } as const;
 

@@ -17,7 +17,7 @@ const getAll = async (_: Request, res: Response): Promise<Response> => {
 
 const getOne = async (req: Request, res: Response) => {
     const param: ParamsDictionary = req.params
-    const category: ICategory|null = await CategoryService.getOne({ slug: param.slug })
+    const category: ICategory|null = await CategoryService.getOne({ slug: param.id })
     if(!category) {
         return res.status(NOT_FOUND).json(new ResponseError( 'Không tìm thấy', NotifyResponse.HIDDEN))
     }

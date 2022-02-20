@@ -19,6 +19,8 @@ export interface IUser extends Document {
     createdAt: number
 }
 
+export const roles: string[] = ['user','mod','admin','sp_admin']
+
 const schema = new Schema<IUser>({
     name: {
         type: String,
@@ -41,7 +43,7 @@ const schema = new Schema<IUser>({
     },
     role: {
         type: String,
-        enum: ['user', 'mod', 'admin', 'sp_admin'],
+        enum: roles,
         default: 'user'
     },
     avatar: {

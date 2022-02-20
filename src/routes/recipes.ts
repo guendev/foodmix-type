@@ -11,7 +11,7 @@ const router = Router();
 // Paths
 export const p = {
     many: '/many',
-    single: '/single/:slug',
+    single: '/single/:id',
     create: '/single'
 } as const;
 
@@ -21,6 +21,7 @@ export const p = {
  * Router
  */
 router.post(p.create, permission('*'), createRecipe, validator, controller.create)
+router.patch(p.single, permission('*'), createRecipe, validator, controller.update)
 
 // Export default
 export default router;

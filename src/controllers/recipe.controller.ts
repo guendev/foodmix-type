@@ -6,15 +6,17 @@ import {NotifyResponse, ResponseError, ResponseSuccess} from "@utils/response";
 import { ICategory } from "@models/category";
 import {CategoryService} from "@services/category.service";
 import transformerKey from "@shared/transformer";
+import {ParamsDictionary} from "express-serve-static-core";
+import {mergeModQuery} from "@shared/permission";
 
-const { OK, FORBIDDEN } = StatusCodes
+const { OK, NOT_FOUND } = StatusCodes
 
 const create = async (req: Request, res: Response): Promise<Response> => {
     const form: IRecipeInput = transformerKey<IRecipeInput>(req.body,IRecipeInputKeys)
 
     const category: ICategory|null = await CategoryService.getOne({ slug: form.category })
     if(!category) {
-        return res.status(FORBIDDEN).json(new ResponseError( 'Phân loại không tồn tại', NotifyResponse.NOTIFY))
+        return res.status(NOT_FOUND).json(new ResponseError( 'Phân loại không tồn tại', NotifyResponse.NOTIFY))
     }
 
     const user = req.user
@@ -24,6 +26,28 @@ const create = async (req: Request, res: Response): Promise<Response> => {
     return res.status(OK).json(new ResponseSuccess(recipe, 'Tạo mới thành công', NotifyResponse.NOTIFY))
 }
 
+const update = async (req: Request, res: Response): Promise<Response> => {
+    const form: IRecipeInput = transformerKey<IRecipeInput>(req.body,IRecipeInputKeys)
+    const param: ParamsDictionary = req.params
+    const user = req.user
+
+    const recipe: IRecipe | null = await RecipeService.getOne(mergeModQuery({ slug: param.id }, user!))
+    if(!recipe) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.NOTIFY))
+    }
+
+    const category: ICategory|null = await CategoryService.getOne({ slug: form.category })
+    if(!category) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Phân loại không tồn tại', NotifyResponse.NOTIFY))
+    }
+
+    form.category = category._id
+    const _recipe = await RecipeService.update({ _id: recipe._id }, form)
+
+    return res.status(OK).json(new ResponseSuccess(_recipe, 'Cập nhật thành công', NotifyResponse.NOTIFY))
+}
+
 export default {
-    create
+    create,
+    update
 }
