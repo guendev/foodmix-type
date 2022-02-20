@@ -1,4 +1,5 @@
 import {check, ValidationChain} from 'express-validator'
+import {sortValidator} from "@validator/sort.validation";
 
 export const createRecipe: ValidationChain[] = [
     check('name', 'Tên là bắt buộc').not().isEmpty(),
@@ -47,7 +48,7 @@ export const createRecipe: ValidationChain[] = [
     check('preparation', 'Time là bắt buộc').not().isEmpty()
 ]
 
-
-export default {
-    createRecipe
-} as const
+export const searchRecipes: ValidationChain[] = [
+    check('page', 'Page không được để trống').isNumeric(),
+    check('limit', 'Limit không được để trống').isNumeric(),
+]

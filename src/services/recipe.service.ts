@@ -17,6 +17,13 @@ class RecipeService {
             .lean<IRecipe[]>()
     }
 
+    static async search(sortOptions: SearchRecipesOptions): Promise<IRecipe[]> {
+        return Recipe.find(sortOptions.filter)
+            .skip(sortOptions.skip)
+            .limit(sortOptions.limit)
+            .lean<IRecipe[]>()
+    }
+
     static async count(filter: object): Promise<number> {
         return Recipe.find(filter).countDocuments()
     }
@@ -58,7 +65,28 @@ interface IRecipeCreateInput extends IRecipeInput{
     user: Types.ObjectId
 }
 
-const IRecipeCreateInputKeys: string[] = [...IRecipeInputKeys, "users"]
+class SearchRecipesOptions extends SortOptions {
+    keyword?: string
+    category?: string
+
+    constructor({ keyword, category, page, limit }: { keyword?: string, category?: string, page: number, limit: number }) {
+        super({}, page, limit);
+        this.keyword = keyword
+        this.category = category
+    }
+
+    public get filter(): object {
+        return {
+            name: {
+                $regex: this.keyword,
+                $options: 'i'
+            },
+            category: this.category || { $exists: true }
+        }
+    }
+}
+
+const SearchRecipesOptionsKeys = ["keyword", "category", "page", "limit"]
 
 export {
     RecipeService,
@@ -67,5 +95,6 @@ export {
     IRecipeInput,
     IRecipeCreateInput,
     IRecipeInputKeys,
-    IRecipeCreateInputKeys
+    SearchRecipesOptions,
+    SearchRecipesOptionsKeys
 }

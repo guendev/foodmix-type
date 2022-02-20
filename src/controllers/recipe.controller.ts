@@ -1,4 +1,10 @@
-import {IRecipeCreateInput, IRecipeInput, IRecipeInputKeys, RecipeService} from "@services/recipe.service";
+import {
+    IRecipeCreateInput,
+    IRecipeInput,
+    IRecipeInputKeys,
+    RecipeService, SearchRecipesOptions,
+    SearchRecipesOptionsKeys
+} from "@services/recipe.service";
 import {Request, Response} from "express";
 import StatusCodes from "http-status-codes";
 import {IRecipe} from "@models/recipe";
@@ -47,7 +53,28 @@ const update = async (req: Request, res: Response): Promise<Response> => {
     return res.status(OK).json(new ResponseSuccess(_recipe, 'Cập nhật thành công', NotifyResponse.NOTIFY))
 }
 
+const search = async (req: Request, res: Response): Promise<Response> => {
+
+    // chứa keyword + category + page + limit
+    let form: SearchRecipesOptions = transformerKey<SearchRecipesOptions>(req.query, SearchRecipesOptionsKeys)
+    if(form.category) {
+        const category: ICategory|null = await CategoryService.getOne({ slug: form.category })
+        if(category) {
+            form.category = category._id
+        } else {
+            form.category = undefined
+        }
+    }
+
+    form = new SearchRecipesOptions({ ...form })
+
+    const recipes: IRecipe[] = await RecipeService.search(form)
+
+    return res.status(OK).json(new ResponseSuccess(recipes, 'Cập nhật thành công', NotifyResponse.NOTIFY))
+}
+
 export default {
     create,
-    update
+    update,
+    search
 }

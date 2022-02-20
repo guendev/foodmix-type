@@ -3,6 +3,7 @@ function transformerKey<T>(obj: { [key: string]: any }, keys: string[]): T {
     keys.forEach(key => {
         _obj[key] = obj[key]
     })
+
     return _obj as T
 }
 
