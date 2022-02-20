@@ -30,6 +30,8 @@ interface ICategoryInput {
     content: string
 }
 
+export const ICategoryInputKeys: string[] = ["name", "avatar", "content"]
+
 export {
     CategoryService,
     ICategoryInput

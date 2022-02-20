@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 import { validator } from '@validator/index'
-import controller from '@controllers/client/category.controller'
+import controller from '@controllers/category.controller'
 import { createCategory } from "@validator/categories.validation";
 
 

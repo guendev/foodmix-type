@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import controller from '@controllers/client/user.controller'
+import controller from '@controllers/user.controller'
 import { validator } from '@validator/index'
 import { createUser } from '@validator/user.validation'
 

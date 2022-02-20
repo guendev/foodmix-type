@@ -3,7 +3,7 @@ import StatusCodes from 'http-status-codes';
 import { SuperTest, Test, Response } from 'supertest';
 
 import initServer from '@server';
-import { p as categoryPaths } from '@routes/client/categories';
+import { p as categoryPaths } from '@routes/categories';
 import { ICategoryInput } from '@services/category.service';
 import {pErr} from "@shared/functions";
 
