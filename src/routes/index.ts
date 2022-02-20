@@ -2,16 +2,27 @@ import { Router } from 'express'
 const router = Router()
 
 import IRouter from "@utils/router"
-import clientRouter from '@routes/client'
 
-const routersMap: [IRouter] = [
+import userRouter from './users'
+import categoriesRouter from './categories'
+import recipesRouter from './recipes'
+
+const clientRoutersMap: IRouter[] = [
     {
-        prefix: '/client',
-        router: clientRouter
+        prefix: '/users',
+        router: userRouter
+    },
+    {
+        prefix: '/categories',
+        router: categoriesRouter
+    },
+    {
+        prefix: '/recipes',
+        router: recipesRouter
     }
 ];
 
-routersMap.forEach((e) => {
+clientRoutersMap.forEach((e) => {
     router.use(e.prefix, e.router)
 })
 

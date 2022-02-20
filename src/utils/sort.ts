@@ -18,6 +18,10 @@ export class SortOptions implements ISortOptions {
     public get skip(): number {
         return this.limit * this.page
     }
+
+    public get sortFilter(): object {
+        return Object.assign({}, this.sort, { _id: -1 })
+    }
 }
 
 
