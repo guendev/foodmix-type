@@ -1,31 +1,36 @@
 export interface IResponseJson {
-    code: number;
+    code: NotifyResponse;
     data: any,
     msg?: string
 }
 
 export class ResponseSuccess implements IResponseJson {
-    code: number;
+    code: NotifyResponse;
     data: any;
     msg?: string;
 
-    constructor(data: any, msg: string) {
-        this.code = 200
+    constructor(data: any, msg?: string, code?: NotifyResponse) {
+        this.code = code || NotifyResponse.HIDDEN
         this.data = data
-        this.msg = msg
+        this.msg = msg || 'Thành công'
         return this
     }
 }
 
 export class ResponseError implements IResponseJson {
-    code: number;
+    code: NotifyResponse;
     data: any;
     msg?: string;
 
-    constructor(code: number, msg: string) {
-        this.code = code || 403
+    constructor(msg?: string, code?: NotifyResponse) {
+        this.code = code || NotifyResponse.HIDDEN
         this.data = ''
-        this.msg = msg
+        this.msg = msg || 'Thất bại'
         return this
     }
+}
+
+export enum NotifyResponse {
+    HIDDEN,
+    NOTIFY
 }

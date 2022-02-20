@@ -3,12 +3,17 @@ const router = Router()
 
 import IRouter from "@utils/router"
 
-import userRouter from './user'
+import userRouter from './users'
+import categoriesRouter from './categories'
 
-const clientRoutersMap: [IRouter] = [
+const clientRoutersMap: IRouter[] = [
     {
-        prefix: '/user',
+        prefix: '/users',
         router: userRouter
+    },
+    {
+        prefix: '/categories',
+        router: categoriesRouter
     }
 ];
 

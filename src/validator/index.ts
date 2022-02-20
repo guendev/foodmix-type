@@ -1,7 +1,7 @@
-import { validationResult, Result } from "express-validator";
+import {Result, validationResult} from "express-validator";
 import {NextFunction, Request, Response} from "express"
 import StatusCodes from "http-status-codes";
-import {ResponseError} from "@utils/response";
+import {NotifyResponse, ResponseError} from "@utils/response";
 
 const { FORBIDDEN } = StatusCodes
 
@@ -10,5 +10,5 @@ export const validator = (req: Request, res: Response, next: NextFunction) => {
     if(result.isEmpty()) {
         return next()
     }
-    return res.status(FORBIDDEN).json(new ResponseError(FORBIDDEN, result.array({ onlyFirstError: true })[0].msg))
+    return res.status(FORBIDDEN).json(new ResponseError(result.array({ onlyFirstError: true })[0].msg, NotifyResponse.NOTIFY))
 }

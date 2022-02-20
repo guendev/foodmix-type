@@ -1,4 +1,3 @@
-import StatusCodes from 'http-status-codes'
 import { Router } from 'express'
 
 import controller from '@controllers/client/user.controller'
