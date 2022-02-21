@@ -1,7 +1,7 @@
 import {
     IRecipeCreateInput,
     IRecipeInput,
-    IRecipeInputKeys,
+    IRecipeInputKeys, ISearchRecipesOptions,
     RecipeService, SearchRecipesOptions,
     SearchRecipesOptionsKeys
 } from "@services/recipe.service";
@@ -14,6 +14,7 @@ import {CategoryService} from "@services/category.service";
 import transformerKey from "@shared/transformer";
 import {ParamsDictionary} from "express-serve-static-core";
 import {mergeModQuery} from "@shared/permission";
+import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort";
 
 const { OK, NOT_FOUND } = StatusCodes
 
@@ -56,25 +57,37 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 const search = async (req: Request, res: Response): Promise<Response> => {
 
     // chứa keyword + category + page + limit
-    let form: SearchRecipesOptions = transformerKey<SearchRecipesOptions>(req.query, SearchRecipesOptionsKeys)
-    if(form.category) {
-        const category: ICategory|null = await CategoryService.getOne({ slug: form.category })
+    const _form: ISearchRecipesOptions = transformerKey<ISearchRecipesOptions>(req.query, SearchRecipesOptionsKeys)
+    if(_form.category) {
+        const category: ICategory|null = await CategoryService.getOne({ slug: _form.category })
         if(category) {
-            form.category = category._id
+            _form.category = category._id
         } else {
-            form.category = undefined
+            _form.category = undefined
         }
     }
 
-    form = new SearchRecipesOptions({ ...form })
+    const form = new SearchRecipesOptions(_form)
 
     const recipes: IRecipe[] = await RecipeService.search(form)
 
     return res.status(OK).json(new ResponseSuccess(recipes, 'Cập nhật thành công', NotifyResponse.NOTIFY))
 }
 
+const getMany = async (req: Request, res: Response) => {
+
+    let _form: ISortOptions = transformerKey<ISortOptions>(req.query, sortOptionsKeys)
+    let form: SortOptions = SortOptions.fromJSON(_form)
+
+    const recipes: IRecipe[] = await RecipeService.getMany({}, form)
+
+    return res.status(OK).json(new ResponseSuccess(recipes))
+
+}
+
 export default {
     create,
     update,
-    search
+    search,
+    getMany
 }
