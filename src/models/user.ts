@@ -16,7 +16,10 @@ export interface IUser extends Document {
     countRecipe: number,
     countRating: number,
     totalRating: number,
-    createdAt: number
+    createdAt: number,
+
+    // truong ao
+    rating?: number
 }
 
 export const roles: string[] = ['user','mod','admin','sp_admin']

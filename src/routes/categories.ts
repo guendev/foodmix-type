@@ -33,6 +33,7 @@ router.get(p.recipes, sortValidator, validator, controller.recipes)
  **********************************************************************************/
 router.post(p.create, createCategory, validator, controller.create)
 router.patch(p.single, createCategory, validator, controller.update)
+// Todo: delete category
 
 
 // Export default
