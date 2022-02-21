@@ -26,49 +26,40 @@
 
 
 ## .env
-> Bạn cần thiết lập các biến môi trường trước khi sử dụng. Example: [.env](https://github.com/dnstylish/foodmix-type/tree/master/src/environment)
+> Bạn cần thiết lập các biến môi trường trước khi sử dụng.
+> Các file .env nằm ở `src/environment/env` lần lượt là `development.env` `production.env` `test.env`
+> Example: [.env](https://github.com/dnstylish/foodmix-type/tree/master/src/environment)
 
 ## Storage - 🚧 - [BunnyCDN](https://bunny.net/)
 Chúng tôi sủ dụng BunnyCDN làm máy chủ lưu trữ. Lý do: [Review](https://www.techradar.com/reviews/bunny-cdn)
 
 ```
-    BUNNY_STORAGE_NAME_2=
-    BUNNY_STORAGE_SERVER_2=
-    BUNNY_ACCESS_KEY_2=
-    CDN_DOMAIN_2=
-  ```
+BUNNY_STORAGE_NAME=
+BUNNY_STORAGE_SERVER=
+BUNNY_ACCESS_KEY=
+CDN_DOMAIN=
+```
 - Để bảo mật tài nguyên vui lòng đặt ```SECURE_ENABLE = 1```
 - Xem thêm: [How to sign URLs](https://support.bunny.net/hc/en-us/articles/360016055099-How-to-sign-URLs-for-BunnyCDN-Token-Authentication)
-## Usage
+## Sử dụng
+### Development
+Môi trường phát triển hoặc test
 
 ```
-# install npm
+# Cài đặt npm
 npm run dev
 
-# install pm2 process manager
-npm install -g pm2
+# Setup các biến môi trường *.env
 
-# startup script
-pm2 startup
-
-# start process
-pm2 start
-
-# save process list
-pm2 save
-
-# list all processes
-pm2 l
-
-# stop process
-npm stop
+# Khởi chạy project
+npm run dev
 ```
 
 ## Watermark - 🚧 
 Để thay đổi watermark, hãy gi đè các file tại `src/environment/watermark`
 
 ## Quảng Cáo - 🚧
-- Để thay đổi watermark, hãy gi đè các file tại `src/environment/ads`
+- Để thay đổi mã quảng cáo, hãy gi đè các file tại `src/environment/ads`
 > Vì lý do chính sách. Bạn có thể tắt quảng cáo trên những trang mình muốn.
 
 ## Studio: FoodMix - Studio - 🚧
