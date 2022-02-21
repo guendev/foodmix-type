@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { validator } from '@validator/index'
 import controller from '@controllers/category.controller'
 import { createCategory } from "@validator/categories.validation";
+import {sortValidator} from "@validator/sort.validation";
 
 
 
@@ -13,7 +14,8 @@ const router = Router();
 export const p = {
     all: '/all',
     single: '/single/:id',
-    create: '/single'
+    create: '/single',
+    recipes: '/single/:id/recipes'
 } as const;
 
 
@@ -22,8 +24,8 @@ export const p = {
  *                                  Query
  **********************************************************************************/
 router.get(p.all, controller.getAll)
-// xem thông tin
 router.get(p.single, controller.getOne)
+router.get(p.recipes, sortValidator, validator, controller.recipes)
 
 
 /***********************************************************************************
