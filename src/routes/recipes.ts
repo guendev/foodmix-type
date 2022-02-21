@@ -12,11 +12,12 @@ const router = Router();
 // Paths
 export const p = {
     many: '/many',
-    single: '/single/:id',
     create: '/single',
     search: '/search',
     random: '/random',
+    single: '/single/:id',
     bookmark: '/single/:id/bookmark',
+    reviews: '/single/:id/reviews'
 } as const;
 
 
@@ -31,6 +32,8 @@ router.get(p.many, sortValidator, validator, controller.getMany)
 router.get(p.search, searchRecipes, validator, controller.search)
 router.get(p.single, controller.single)
 router.get(p.random, controller.random)
+
+router.get(p.reviews, sortValidator, validator, controller.getManyReviews)
 
 /***********************************************************************************
  *                                  Mutation

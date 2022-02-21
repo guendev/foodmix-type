@@ -18,6 +18,7 @@ import {ParamsDictionary} from "express-serve-static-core";
 import {mergeModQuery} from "@shared/permission";
 import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort";
 import {BookmarkService} from "@services/bookmark.service";
+import {ReviewService} from "@services/review.service";
 
 const { OK, NOT_FOUND } = StatusCodes
 
@@ -130,6 +131,19 @@ const bookmark = async ({ params, user }: Request, res: Response): Promise<Respo
     }
 }
 
+const getManyReviews = async ({ params, query }: Request, res: Response) => {
+    const recipe = await RecipeService.getOne({ slug: params.id })
+    if(!recipe) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.NOTIFY))
+    }
+    let _form: ISortOptions = transformerKey<ISortOptions>(query, sortOptionsKeys)
+    let form: SortOptions = SortOptions.fromJSON(_form)
+
+    const reviews = await ReviewService.getMany({ recipe: recipe._id }, form)
+
+    return res.status(OK).json(new ResponseSuccess(reviews))
+}
+
 export default {
     create,
     update,
@@ -138,5 +152,6 @@ export default {
     single,
     remove,
     random,
-    bookmark
+    bookmark,
+    getManyReviews
 }
