@@ -12,7 +12,7 @@ type TReqBody = string | object | undefined;
 
 describe('category-router', async () => {
 
-    const paths = '/api/client/categories';
+    const paths = '/api/categories';
     const postCreate = `${paths}${categoryPaths.create}`;
 
     const { BAD_REQUEST, CREATED, OK } = StatusCodes;

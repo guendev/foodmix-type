@@ -2,18 +2,21 @@ import {
     IRecipeCreateInput,
     IRecipeInput,
     IRecipeInputKeys,
-    RecipeService, SearchRecipesOptions,
+    ISearchRecipesOptions,
+    RecipeService,
+    SearchRecipesOptions,
     SearchRecipesOptionsKeys
 } from "@services/recipe.service";
 import {Request, Response} from "express";
 import StatusCodes from "http-status-codes";
 import {IRecipe} from "@models/recipe";
 import {NotifyResponse, ResponseError, ResponseSuccess} from "@utils/response";
-import { ICategory } from "@models/category";
+import {ICategory} from "@models/category";
 import {CategoryService} from "@services/category.service";
 import transformerKey from "@shared/transformer";
 import {ParamsDictionary} from "express-serve-static-core";
 import {mergeModQuery} from "@shared/permission";
+import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort";
 
 const { OK, NOT_FOUND } = StatusCodes
 
@@ -56,25 +59,56 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 const search = async (req: Request, res: Response): Promise<Response> => {
 
     // chứa keyword + category + page + limit
-    let form: SearchRecipesOptions = transformerKey<SearchRecipesOptions>(req.query, SearchRecipesOptionsKeys)
-    if(form.category) {
-        const category: ICategory|null = await CategoryService.getOne({ slug: form.category })
+    const _form: ISearchRecipesOptions = transformerKey<ISearchRecipesOptions>(req.query, SearchRecipesOptionsKeys)
+    if(_form.category) {
+        const category: ICategory|null = await CategoryService.getOne({ slug: _form.category })
         if(category) {
-            form.category = category._id
+            _form.category = category._id
         } else {
-            form.category = undefined
+            _form.category = undefined
         }
     }
 
-    form = new SearchRecipesOptions({ ...form })
+    const form = new SearchRecipesOptions(_form)
 
     const recipes: IRecipe[] = await RecipeService.search(form)
 
     return res.status(OK).json(new ResponseSuccess(recipes, 'Cập nhật thành công', NotifyResponse.NOTIFY))
 }
 
+const getMany = async (req: Request, res: Response): Promise<Response> => {
+
+    let _form: ISortOptions = transformerKey<ISortOptions>(req.query, sortOptionsKeys)
+    let form: SortOptions = SortOptions.fromJSON(_form)
+
+    const recipes: IRecipe[] = await RecipeService.getMany({}, form)
+
+    return res.status(OK).json(new ResponseSuccess(recipes))
+
+}
+
+const single = async (req: Request, res: Response): Promise<Response> =>{
+    const params: ParamsDictionary = req.params
+    const recipe = await RecipeService.getOne({ slug: params.id })
+    if(!recipe) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.HIDDEN))
+    }
+    return res.status(OK).json(new ResponseSuccess(recipe))
+}
+
+const remove = async ({ params, user }: Request, res: Response): Promise<Response> => {
+    const recipe = await RecipeService.delete(mergeModQuery({ slug: params.id }, user!))
+    if(!recipe) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.NOTIFY))
+    }
+    return res.status(OK).json(new ResponseSuccess(recipe, 'Xoá thành công', NotifyResponse.NOTIFY))
+}
+
 export default {
     create,
     update,
-    search
+    search,
+    getMany,
+    single,
+    remove
 }

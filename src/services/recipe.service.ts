@@ -13,7 +13,7 @@ class RecipeService {
         return Recipe.find(filter)
             .sort(sortOptions.sortFilter)
             .skip(sortOptions.skip)
-            .limit(sortOptions.limit)
+            .limit(sortOptions.limitFilter)
             .lean<IRecipe[]>()
     }
 
@@ -34,6 +34,10 @@ class RecipeService {
 
     static async update(filter: object, doc: IRecipeInput): Promise<IRecipe|null> {
         return Recipe.findOneAndUpdate(filter, doc, { returnOriginal: false })
+    }
+
+    static async delete(filter: object): Promise<IRecipe|null> {
+        return Recipe.findOneAndDelete(filter).lean<IRecipe>()
     }
 }
 
@@ -65,12 +69,19 @@ interface IRecipeCreateInput extends IRecipeInput{
     user: Types.ObjectId
 }
 
+interface ISearchRecipesOptions {
+    keyword?: string;
+    category?: string;
+    page: number;
+    limit: number;
+}
+
 class SearchRecipesOptions extends SortOptions {
     keyword?: string
     category?: string
 
-    constructor({ keyword, category, page, limit }: { keyword?: string, category?: string, page: number, limit: number }) {
-        super({}, page, limit);
+    constructor({ keyword, category, page, limit }: ISearchRecipesOptions) {
+        super({ sort: {}, page, limit })
         this.keyword = keyword
         this.category = category
     }
@@ -96,5 +107,6 @@ export {
     IRecipeCreateInput,
     IRecipeInputKeys,
     SearchRecipesOptions,
-    SearchRecipesOptionsKeys
+    SearchRecipesOptionsKeys,
+    ISearchRecipesOptions
 }
