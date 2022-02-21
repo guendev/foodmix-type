@@ -10,7 +10,8 @@ const router = Router();
 
 // Paths
 export const p = {
-    many: '/many'
+    many: '/many',
+    single: '/single/:id',
 } as const;
 
 
@@ -21,5 +22,10 @@ export const p = {
  *                                  Query
  **********************************************************************************/
 router.get(p.many, permission('*'), sortValidator, validator, controller.many)
+
+/***********************************************************************************
+ *                                  Mutation
+ **********************************************************************************/
+router.delete(p.single, permission('*'), controller.remove)
 
 export default router;
