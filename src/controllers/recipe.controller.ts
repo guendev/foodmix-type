@@ -104,11 +104,17 @@ const remove = async ({ params, user }: Request, res: Response): Promise<Respons
     return res.status(OK).json(new ResponseSuccess(recipe, 'Xoá thành công', NotifyResponse.NOTIFY))
 }
 
+const random = async (req: Request, res: Response): Promise<Response> => {
+    const recipes = await RecipeService.random(Number(req.query.size))
+    return res.status(OK).json(new ResponseSuccess(recipes))
+}
+
 export default {
     create,
     update,
     search,
     getMany,
     single,
-    remove
+    remove,
+    random
 }

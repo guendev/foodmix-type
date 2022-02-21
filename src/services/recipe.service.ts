@@ -39,6 +39,21 @@ class RecipeService {
     static async delete(filter: object): Promise<IRecipe|null> {
         return Recipe.findOneAndDelete(filter).lean<IRecipe>()
     }
+
+    static async random(size?: number) {
+        return Recipe.aggregate([
+            { $sample: { size: size || 10 } },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            { $unwind: '$user' }
+        ])
+    }
 }
 
 interface IIngredient {

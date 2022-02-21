@@ -14,7 +14,8 @@ export const p = {
     many: '/many',
     single: '/single/:id',
     create: '/single',
-    search: '/search'
+    search: '/search',
+    random: '/random'
 } as const;
 
 
@@ -28,6 +29,7 @@ export const p = {
 router.get(p.many, sortValidator, validator, controller.getMany)
 router.get(p.search, searchRecipes, validator, controller.search)
 router.get(p.single, controller.single)
+router.get(p.random, controller.random)
 
 /***********************************************************************************
  *                                  Mutation
