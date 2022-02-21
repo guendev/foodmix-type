@@ -15,7 +15,8 @@ export const p = {
     single: '/single/:id',
     create: '/single',
     search: '/search',
-    random: '/random'
+    random: '/random',
+    bookmark: '/single/:id/bookmark',
 } as const;
 
 
@@ -37,6 +38,7 @@ router.get(p.random, controller.random)
 router.post(p.create, permission('*'), createRecipe, validator, controller.create)
 router.patch(p.single, permission('*'), createRecipe, validator, controller.update)
 router.delete(p.single, permission('*'), controller.remove)
+router.post(p.bookmark, permission('*'), controller.bookmark)
 
 // Export default
 export default router;

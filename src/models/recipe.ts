@@ -26,7 +26,6 @@ export interface IIngredientDocument extends Document, IIngredient {}
 
 export interface IStepperDocument extends Document, IStepper {}
 
-// @ts-ignore
 const schema = new Schema<IRecipe>({
     name: {
         type: String,
