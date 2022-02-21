@@ -9,17 +9,20 @@ export type UsersSchema = {
 
 type Keys = keyof UsersSchema
 
+interface IFoo {
+    name: string
+}
+
 
 function run() {
-    const test = {
-        id: 1,
-        firstName: 'string',
-        lastName: 'string',
-        email: 'string'
+    const obj = {
+        name: 'Foo',
+        bar: 'Bar'
     }
 
-    const test1: UsersSchema = transformerKey<UsersSchema>(test,['id', 'firstName', 'lastName', 'email'])
-    console.log(test1)
+    const test: IFoo = obj
+
+    console.log(test)
 }
 
 run()
