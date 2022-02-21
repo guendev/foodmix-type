@@ -17,6 +17,7 @@ import transformerKey from "@shared/transformer";
 import {ParamsDictionary} from "express-serve-static-core";
 import {mergeModQuery} from "@shared/permission";
 import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort";
+import {BookmarkService} from "@services/bookmark.service";
 
 const { OK, NOT_FOUND } = StatusCodes
 
@@ -104,11 +105,38 @@ const remove = async ({ params, user }: Request, res: Response): Promise<Respons
     return res.status(OK).json(new ResponseSuccess(recipe, 'Xoá thành công', NotifyResponse.NOTIFY))
 }
 
+const random = async (req: Request, res: Response): Promise<Response> => {
+    const recipes = await RecipeService.random(Number(req.query.size))
+    return res.status(OK).json(new ResponseSuccess(recipes))
+}
+
+const bookmark = async ({ params, user }: Request, res: Response): Promise<Response> => {
+    const recipe = await RecipeService.getOne({ slug: params.id })
+    if(!recipe) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.NOTIFY))
+    }
+    const bookmark = new BookmarkService(user!)
+
+    // kieemr da da bookmark hay chua
+    const check = await bookmark.exist(recipe)
+
+    if(check) {
+        // da ton tai => xoa
+        await bookmark.delete(check._id)
+        return res.status(OK).json(new ResponseSuccess(check, 'Thành công', NotifyResponse.NOTIFY))
+    } else {
+        const result = await bookmark.store(recipe)
+        return res.status(OK).json(new ResponseSuccess(result, 'Thành công', NotifyResponse.NOTIFY))
+    }
+}
+
 export default {
     create,
     update,
     search,
     getMany,
     single,
-    remove
+    remove,
+    random,
+    bookmark
 }

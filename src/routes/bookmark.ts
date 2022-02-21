@@ -1,10 +1,9 @@
 import { Router } from 'express'
-import {createRecipe, searchRecipes} from "@validator/recipe.validation"
-import {validator} from "@validator/index"
-import controller from '@controllers/recipe.controller'
-import permission from "@middleware/permission.middleware";
-import {sortValidator} from "@validator/sort.validation";
 
+import {sortValidator} from "@validator/sort.validation"
+import {validator} from "@validator/index"
+import controller from '@controllers/bookmark.controller'
+import permission from "@middleware/permission.middleware";
 
 // Constants
 const router = Router();
@@ -13,12 +12,7 @@ const router = Router();
 export const p = {
     many: '/many',
     single: '/single/:id',
-    create: '/single',
-    search: '/search',
-    random: '/random',
-    bookmark: '/single/:id/bookmark',
 } as const;
-
 
 
 /**
@@ -27,18 +21,12 @@ export const p = {
 /***********************************************************************************
  *                                  Query
  **********************************************************************************/
-router.get(p.many, sortValidator, validator, controller.getMany)
-router.get(p.search, searchRecipes, validator, controller.search)
-router.get(p.single, controller.single)
-router.get(p.random, controller.random)
+router.get(p.many, permission('*'), sortValidator, validator, controller.many)
 
 /***********************************************************************************
  *                                  Mutation
  **********************************************************************************/
-router.post(p.create, permission('*'), createRecipe, validator, controller.create)
-router.patch(p.single, permission('*'), createRecipe, validator, controller.update)
 router.delete(p.single, permission('*'), controller.remove)
-router.post(p.bookmark, permission('*'), controller.bookmark)
+router.delete(p.many, permission('*'), controller.deleteMany)
 
-// Export default
 export default router;

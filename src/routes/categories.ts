@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { validator } from '@validator/index'
 import controller from '@controllers/category.controller'
 import { createCategory } from "@validator/categories.validation";
+import {sortValidator} from "@validator/sort.validation";
 
 
 
@@ -11,21 +12,27 @@ const router = Router();
 
 // Paths
 export const p = {
-    getAll: '/all',
-    getOne: '/single/:id',
-    create: '/single'
+    all: '/all',
+    single: '/single/:id',
+    create: '/single',
+    recipes: '/single/:id/recipes'
 } as const;
 
 
 
-/**
- * Router
- */
-router.get(p.getAll, controller.getAll)
-// xem thông tin
-router.get(p.getOne, controller.getOne)
-// tạo category
+/***********************************************************************************
+ *                                  Query
+ **********************************************************************************/
+router.get(p.all, controller.getAll)
+router.get(p.single, controller.getOne)
+router.get(p.recipes, sortValidator, validator, controller.recipes)
+
+
+/***********************************************************************************
+ *                                  Mutation
+ **********************************************************************************/
 router.post(p.create, createCategory, validator, controller.create)
+router.patch(p.single, createCategory, validator, controller.update)
 
 
 // Export default

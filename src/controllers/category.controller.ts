@@ -6,6 +6,9 @@ import {CategoryService, ICategoryInput, ICategoryInputKeys} from "@services/cat
 import {ICategory} from "@models/category";
 import {NotifyResponse, ResponseError, ResponseSuccess} from "@utils/response";
 import transformerKey from "@shared/transformer";
+import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort";
+import {IRecipe} from "@models/recipe";
+import {RecipeService} from "@services/recipe.service";
 
 const { OK, NOT_FOUND } = StatusCodes
 
@@ -30,8 +33,34 @@ const create = async (req: Request, res: Response) => {
     return res.status(OK).json(new ResponseSuccess(category, 'Tạo mới thành công', NotifyResponse.NOTIFY))
 }
 
+const update = async (req: Request, res: Response) => {
+    const category: ICategory|null = await CategoryService.getOne({ slug: req.params.id })
+    if(!category) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Không tìm thấy phaan loai', NotifyResponse.HIDDEN))
+    }
+    const form: ICategoryInput = transformerKey<ICategoryInput>(req.body, ICategoryInputKeys)
+
+    const _updated = await CategoryService.update({ _id: category._id }, form)
+    return res.status(OK).json(new ResponseSuccess(_updated, 'Cap nhat thành công', NotifyResponse.NOTIFY))
+}
+
+const recipes = async (req: Request, res: Response) => {
+    const category: ICategory|null = await CategoryService.getOne({ slug: req.params.id })
+    if(!category) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Không tìm thấy phaan loai', NotifyResponse.HIDDEN))
+    }
+
+    let _form: ISortOptions = transformerKey<ISortOptions>(req.query, sortOptionsKeys)
+    let form: SortOptions = SortOptions.fromJSON(_form)
+
+    const recipes: IRecipe[] = await RecipeService.getMany({ category: category._id}, form)
+    return res.status(OK).json(new ResponseSuccess(recipes))
+}
+
 export default {
     getAll,
     getOne,
-    create
+    create,
+    update,
+    recipes
 } as const
