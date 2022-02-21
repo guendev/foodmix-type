@@ -27,7 +27,7 @@ export class BookmarkService {
     }
 
     async deleteALl() {
-        return Bookmark.deleteMany({ user: this.user._id })
+        return Bookmark.deleteMany({ user: this.user._id }).lean()
     }
 
     async exist(recipe: IRecipe) {

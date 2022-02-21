@@ -6,6 +6,7 @@ import {Types} from "mongoose"
 import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort"
 import {BookmarkService} from "@services/bookmark.service"
 import {NotifyResponse, ResponseError, ResponseSuccess} from '@utils/response'
+import user from "@graphql/types/user";
 
 const { OK, NOT_FOUND, FORBIDDEN } = StatusCodes
 
@@ -33,7 +34,14 @@ const remove = async ({ params, user }: Request, res: Response) => {
     return res.status(OK).json(new ResponseSuccess(check, 'Xoa thanh cong'))
 }
 
+const deleteMany = async ({ user }: Request, res: Response) => {
+    const bookmark = new BookmarkService(user!)
+    const result = await bookmark.deleteALl()
+    return res.status(OK).json(new ResponseSuccess(result.deletedCount, 'Xoa thanh cong'))
+}
+
 export default {
     many,
-    remove
+    remove,
+    deleteMany
 } as const

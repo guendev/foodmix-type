@@ -27,5 +27,6 @@ router.get(p.many, permission('*'), sortValidator, validator, controller.many)
  *                                  Mutation
  **********************************************************************************/
 router.delete(p.single, permission('*'), controller.remove)
+router.delete(p.many, permission('*'), controller.deleteMany)
 
 export default router;
