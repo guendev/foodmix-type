@@ -38,7 +38,15 @@ const signin = async (req: Request, res: Response) => {
     return res.status(OK).json(new ResponseSuccess(_token, 'Đăng nhập thành công', NotifyResponse.NOTIFY))
 }
 
+const me = ({ user }: Request, res: Response): Response => {
+    if(!user) {
+        return res.status(FORBIDDEN).json(new ResponseError())
+    }
+    return res.status(OK).json(new ResponseSuccess(user))
+}
+
 export default {
     signup,
-    signin
+    signin,
+    me
 } as const

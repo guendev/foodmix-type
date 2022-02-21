@@ -12,14 +12,21 @@ const router = Router();
 // Paths
 export const p = {
     signup: '/signup',
-    signin: '/signin'
+    signin: '/signin',
+    me: '/me'
 } as const;
 
 
 
-/**
- * Get all users.
- */
+/***********************************************************************************
+ *                                  Query
+ **********************************************************************************/
+router.get(p.me, controller.me)
+
+
+/***********************************************************************************
+ *                                  Mutation
+ **********************************************************************************/
 router.post(p.signup, createUser, validator, controller.signup)
 router.post(p.signin, controller.signin)
 

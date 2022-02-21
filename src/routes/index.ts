@@ -6,6 +6,7 @@ import IRouter from "@utils/router"
 import userRouter from './users'
 import categoriesRouter from './categories'
 import recipesRouter from './recipes'
+import uploadRouter from "@routes/upload"
 
 const clientRoutersMap: IRouter[] = [
     {
@@ -19,6 +20,10 @@ const clientRoutersMap: IRouter[] = [
     {
         prefix: '/recipes',
         router: recipesRouter
+    },
+    {
+        prefix: '/upload',
+        router: uploadRouter
     }
 ];
 
