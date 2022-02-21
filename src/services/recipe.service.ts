@@ -35,6 +35,10 @@ class RecipeService {
     static async update(filter: object, doc: IRecipeInput): Promise<IRecipe|null> {
         return Recipe.findOneAndUpdate(filter, doc, { returnOriginal: false })
     }
+
+    static async delete(filter: object): Promise<IRecipe|null> {
+        return Recipe.findOneAndDelete(filter).lean<IRecipe>()
+    }
 }
 
 interface IIngredient {

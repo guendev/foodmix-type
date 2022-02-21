@@ -1,15 +1,17 @@
 import {
     IRecipeCreateInput,
     IRecipeInput,
-    IRecipeInputKeys, ISearchRecipesOptions,
-    RecipeService, SearchRecipesOptions,
+    IRecipeInputKeys,
+    ISearchRecipesOptions,
+    RecipeService,
+    SearchRecipesOptions,
     SearchRecipesOptionsKeys
 } from "@services/recipe.service";
 import {Request, Response} from "express";
 import StatusCodes from "http-status-codes";
 import {IRecipe} from "@models/recipe";
 import {NotifyResponse, ResponseError, ResponseSuccess} from "@utils/response";
-import { ICategory } from "@models/category";
+import {ICategory} from "@models/category";
 import {CategoryService} from "@services/category.service";
 import transformerKey from "@shared/transformer";
 import {ParamsDictionary} from "express-serve-static-core";
@@ -74,7 +76,7 @@ const search = async (req: Request, res: Response): Promise<Response> => {
     return res.status(OK).json(new ResponseSuccess(recipes, 'Cập nhật thành công', NotifyResponse.NOTIFY))
 }
 
-const getMany = async (req: Request, res: Response) => {
+const getMany = async (req: Request, res: Response): Promise<Response> => {
 
     let _form: ISortOptions = transformerKey<ISortOptions>(req.query, sortOptionsKeys)
     let form: SortOptions = SortOptions.fromJSON(_form)
@@ -85,9 +87,28 @@ const getMany = async (req: Request, res: Response) => {
 
 }
 
+const single = async (req: Request, res: Response): Promise<Response> =>{
+    const params: ParamsDictionary = req.params
+    const recipe = await RecipeService.getOne({ slug: params.id })
+    if(!recipe) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.HIDDEN))
+    }
+    return res.status(OK).json(new ResponseSuccess(recipe))
+}
+
+const remove = async ({ params, user }: Request, res: Response): Promise<Response> => {
+    const recipe = await RecipeService.delete(mergeModQuery({ slug: params.id }, user!))
+    if(!recipe) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.NOTIFY))
+    }
+    return res.status(OK).json(new ResponseSuccess(recipe, 'Xoá thành công', NotifyResponse.NOTIFY))
+}
+
 export default {
     create,
     update,
     search,
-    getMany
+    getMany,
+    single,
+    remove
 }
