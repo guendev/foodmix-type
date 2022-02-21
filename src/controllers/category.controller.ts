@@ -30,8 +30,20 @@ const create = async (req: Request, res: Response) => {
     return res.status(OK).json(new ResponseSuccess(category, 'Tạo mới thành công', NotifyResponse.NOTIFY))
 }
 
+const update = async (req: Request, res: Response) => {
+    const category: ICategory|null = await CategoryService.getOne({ slug: req.params.id })
+    if(!category) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Không tìm thấy phaan loai', NotifyResponse.HIDDEN))
+    }
+    const form: ICategoryInput = transformerKey<ICategoryInput>(req.body, ICategoryInputKeys)
+
+    const _updated = await CategoryService.update({ _id: category._id }, form)
+    return res.status(OK).json(new ResponseSuccess(_updated, 'Cap nhat thành công', NotifyResponse.NOTIFY))
+}
+
 export default {
     getAll,
     getOne,
-    create
+    create,
+    update
 } as const

@@ -11,21 +11,26 @@ const router = Router();
 
 // Paths
 export const p = {
-    getAll: '/all',
-    getOne: '/single/:id',
+    all: '/all',
+    single: '/single/:id',
     create: '/single'
 } as const;
 
 
 
-/**
- * Router
- */
-router.get(p.getAll, controller.getAll)
+/***********************************************************************************
+ *                                  Query
+ **********************************************************************************/
+router.get(p.all, controller.getAll)
 // xem thông tin
-router.get(p.getOne, controller.getOne)
-// tạo category
+router.get(p.single, controller.getOne)
+
+
+/***********************************************************************************
+ *                                  Mutation
+ **********************************************************************************/
 router.post(p.create, createCategory, validator, controller.create)
+router.patch(p.single, createCategory, validator, controller.update)
 
 
 // Export default
