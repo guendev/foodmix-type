@@ -20,20 +20,24 @@ export class WrapperError extends Error {
 }
 
 
-type WrapperCallback = (data: IWrapperResponse) => (void | Promise<void>)
+type WrapperCallback = (data: IWrapperResponse, success: boolean) => (void | Promise<void>)
 type WrapperAction = () => (Promise<IWrapperResponse> | IWrapperResponse)
 
 export const wrapperAPI = async (action: WrapperAction, res: Response, callback?: WrapperCallback ) => {
     try {
+
         const { data, code, msg }: IWrapperResponse = await action()
-        await callback?.({ data, code, msg })
+        await callback?.({ data, code, msg }, true)
         return res.status(OK).json(new ResponseSuccess(data, msg, code))
+
     } catch (e) {
+
         if(e.options) {
             const { status, msg, code }: IWrapperResponse = e.options
-            await callback?.(e.options)
+            await callback?.(e.options, false)
             return res.status(status || FORBIDDEN).json(new ResponseError(msg, code))
         }
         return res.status(FORBIDDEN).json(new ResponseError())
+
     }
 }

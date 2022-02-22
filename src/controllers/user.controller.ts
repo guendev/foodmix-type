@@ -6,7 +6,7 @@ import { IUser } from '@models/user'
 import { NotifyResponse, ResponseError, ResponseSuccess } from "@shared/response";
 import {matchPassword} from "@services/password.service";
 import {createToken} from "@services/token.service";
-import {IWrapperResponse, wrapperAPI} from "@actions/wrapper";
+import {wrapperAPI} from "@actions/wrapper";
 import {signupAction} from "@actions/query/user.query";
 
 const { OK, FORBIDDEN } = StatusCodes
