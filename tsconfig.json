@@ -72,6 +72,9 @@
       "@events/*": [
         "src/events/*"
       ],
+      "@actions/*": [
+        "src/actions/*"
+      ],
       "@events": [
         "src/events"
       ],
@@ -110,6 +113,7 @@
     "typeRoots": [
       "src/@types", "node_modules/@types"]
   },
+  "$schema": "https://json.schemastore.org/tsconfig",
   "include": [
     "src/**/*.ts",
     "spec/**/*.ts"

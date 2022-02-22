@@ -42,6 +42,29 @@ CDN_DOMAIN=
 - Để bảo mật tài nguyên vui lòng đặt ```SECURE_ENABLE = 1```
 - Xem thêm: [How to sign URLs](https://support.bunny.net/hc/en-us/articles/360016055099-How-to-sign-URLs-for-BunnyCDN-Token-Authentication)
 ## Sử dụng
+
+### Phân giải API
+> Chúng tôi sử dụng Wrapper để bao bọc các yêu cầu. Để tiện cho trình bài chúng tôi sẽ gọi restful là API.
+- Bộ core xử lý API và Graphql là một.
+- Chỉ khác nhau định dạng trả về. Riêng graphql chỉ trả về status code là 200.
+- Tuy vậy nếu yêu cầu grap gặp lỗi chúng tôi sẽ trả về kèm theo mã lỗi.
+#### Bảng so sánh giữa API và Graphql
+
+| Graphql        | API  | Nơi Xuất Hiện |
+|----------------|------|---------------|
+| `OK`           | 200  | Thành Công    |
+| `BAD_REQUEST`  | 400  | Lỗi Form      |
+| `UNAUTHORIZED` | 401  | Đăng Nhập     |
+| `FORBIDDEN`    | 403  | Phân Quyền    |
+| `NOT_FOUND`    | 404  | Không Thấy    |
+
+- `BAD_REQUEST` có thể bao gồm: thiếu dữ liệu, không chính xác.
+- `UNAUTHORIZED` xảy ra khi truy cập vào 1 request yêu cầu đăng nhập.
+- `FORBIDDEN` xảy ra khi người đăng nhập không đủ quyền yêu cầu request.
+- `NOT_FOUND` xảy ra khi truy cập vào 1 tài nguyên không tồn tại.
+> Ngoài ra tuỳ vào trường hợp, ngoài trừ `NOT_FOUND` chúng tôi sẽ trả về lỗi có mã `NOTIFY` chứa mã thông báo.
+
+
 ### Development
 Môi trường phát triển hoặc test
 

@@ -32,6 +32,5 @@ export class ResponseError implements IResponseJson {
 
 export enum NotifyResponse {
     HIDDEN,
-    ERROR_FORM,
     NOTIFY,
 }

@@ -1,7 +1,8 @@
 import {mergeTypeDefs} from "@graphql-tools/merge";
 
+import documentDefs from "./document"
 import userSchema from "./user"
 
-const typesArray = [userSchema]
+const typesArray = [userSchema, documentDefs]
 
-export default userSchema
+export default mergeTypeDefs(typesArray)
