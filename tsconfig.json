@@ -72,6 +72,9 @@
       "@events/*": [
         "src/events/*"
       ],
+      "@actions/*": [
+        "src/actions/*"
+      ],
       "@events": [
         "src/events"
       ],

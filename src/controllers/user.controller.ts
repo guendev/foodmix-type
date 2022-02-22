@@ -1,25 +1,21 @@
 import {Request, Response} from 'express'
 import StatusCodes from "http-status-codes"
 
-import {IUserCreateInput, IUserSignInInput, UserService} from "@services/user.service"
-import {IUser} from '@models/user'
-import {NotifyResponse, ResponseError, ResponseSuccess} from "@shared/response";
+import { IUserCreateInput, IUserSignInInput, UserService } from "@services/user.service"
+import { IUser } from '@models/user'
+import { NotifyResponse, ResponseError, ResponseSuccess } from "@shared/response";
 import {matchPassword} from "@services/password.service";
 import {createToken} from "@services/token.service";
+import {IWrapperResponse, wrapperAPI} from "@actions/wrapper";
+import {signupAction} from "@actions/query/user.query";
 
 const { OK, FORBIDDEN } = StatusCodes
 
 const signup = async (req: Request, res: Response) => {
     const form: IUserCreateInput = req.body
-    const _check: IUser = await UserService.getOne({ email: form.email })
-    if(_check) {
-        // user đã tồn tại
-        return res.status(FORBIDDEN).json(new ResponseError( 'Thành viên đã tồn tại', NotifyResponse.NOTIFY))
-    }
-    const user = await UserService.create(form)
-    // tạo jsonwebtoken
-    const _token: string = createToken({ _id: user._id, email: user.email })
-    return res.status(OK).json(new ResponseSuccess(_token, 'Đăng ký thành công', NotifyResponse.NOTIFY))
+
+    // Todo: validate form
+    return wrapperAPI(() => signupAction(form), res)
 }
 
 const signin = async (req: Request, res: Response) => {
