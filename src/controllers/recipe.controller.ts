@@ -146,7 +146,10 @@ const getManyReviews = async ({ params, query }: Request, res: Response) => {
     let _form: ISortOptions = transformerKey<ISortOptions>(query, sortOptionsKeys)
     let form: SortOptions = SortOptions.fromJSON(_form)
 
-    const reviews = await ReviewService.getMany({ recipe: recipe._id }, form)
+    const reviews = await ReviewService.getMany({ recipe: recipe._id }, form, [
+        ReviewService.RELATIONSHIP.USER,
+        ReviewService.RELATIONSHIP.RECIPE
+    ])
 
     return res.status(OK).json(new ResponseSuccess(reviews))
 }

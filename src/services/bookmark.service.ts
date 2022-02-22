@@ -1,8 +1,9 @@
-import { IUser } from "@models/user";
-import {IRecipe} from "@models/recipe";
+import {IUser, User} from "@models/user";
+import {IRecipe, Recipe} from "@models/recipe";
 import { IBookmark, Bookmark } from "@models/bookmark";
 import {Types} from "mongoose";
 import {SortOptions} from "@shared/sort";
+import {IRelationship} from "@shared/relationship";
 
 export class BookmarkService {
     user: IUser
@@ -38,11 +39,25 @@ export class BookmarkService {
         return Bookmark.find({ user: this.user._id }).countDocuments()
     }
 
-    async getMany(options: SortOptions): Promise<IBookmark[]> {
+    async getMany(options: SortOptions, populates: IRelationship[] = []): Promise<IBookmark[]> {
         return Bookmark.find({ user: this.user._id })
+            .populate(populates)
             .sort(options.sortFilter)
             .skip(options.skip)
             .limit(options.limitFilter)
             .lean<IBookmark[]>()
+    }
+
+    static get RELATIONSHIP(): { [key: string]: IRelationship } {
+        return {
+            USER: {
+                model: User,
+                path: 'user'
+            },
+            RECIPE: {
+                model: Recipe,
+                path: 'recipe'
+            }
+        }
     }
 }
