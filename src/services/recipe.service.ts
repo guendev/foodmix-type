@@ -1,5 +1,5 @@
 import {IRecipe, Recipe} from "@models/recipe";
-import {SortOptions} from "@utils/sort";
+import {SortOptions} from "@shared/sort";
 import {Types} from "mongoose";
 
 class RecipeService {

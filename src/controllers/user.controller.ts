@@ -3,7 +3,7 @@ import StatusCodes from "http-status-codes"
 
 import {IUserCreateInput, IUserSignInInput, UserService} from "@services/user.service"
 import {IUser} from '@models/user'
-import {NotifyResponse, ResponseError, ResponseSuccess} from "@utils/response";
+import {NotifyResponse, ResponseError, ResponseSuccess} from "@shared/response";
 import {matchPassword} from "@services/password.service";
 import {createToken} from "@services/token.service";
 

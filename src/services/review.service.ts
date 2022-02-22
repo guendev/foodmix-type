@@ -1,6 +1,6 @@
 import {Types} from "mongoose";
 import {IReview, Review} from "@models/review";
-import {SortOptions} from "@utils/sort";
+import {SortOptions} from "@shared/sort";
 
 export class ReviewService {
     constructor() {}

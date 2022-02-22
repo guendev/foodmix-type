@@ -2,9 +2,9 @@ import {Request, Response} from "express";
 import StatusCodes from "http-status-codes"
 import * as fs from "fs"
 
-import { NotifyResponse, ResponseError, ResponseSuccess } from "@utils/response"
+import { NotifyResponse, ResponseError, ResponseSuccess } from "@shared/response"
 import Events from '@events'
-import { Resize } from "@utils/resize"
+import { Resize } from "@shared/resize"
 
 const { OK, FORBIDDEN } = StatusCodes
 

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 const router = Router()
 
-import IRouter from "@utils/router"
+import IRouter from "@shared/router"
 
 import userRouter from './users'
 import categoriesRouter from './categories'

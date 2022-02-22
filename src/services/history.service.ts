@@ -1,7 +1,7 @@
 import {IUser} from "@models/user"
 import {IRecipe} from "@models/recipe"
 import {History, IHistory} from "@models/history"
-import {SortOptions} from "@utils/sort"
+import {SortOptions} from "@shared/sort"
 import {Types} from "mongoose"
 
 class HistoryService {

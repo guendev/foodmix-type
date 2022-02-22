@@ -1,7 +1,7 @@
 import {Result, validationResult} from "express-validator";
 import {NextFunction, Request, Response} from "express"
 import StatusCodes from "http-status-codes";
-import {NotifyResponse, ResponseError} from "@utils/response";
+import {NotifyResponse, ResponseError} from "@shared/response";
 
 const { FORBIDDEN } = StatusCodes
 

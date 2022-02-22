@@ -4,9 +4,9 @@ import {ParamsDictionary} from "express-serve-static-core";
 
 import {CategoryService, ICategoryInput, ICategoryInputKeys} from "@services/category.service";
 import {ICategory} from "@models/category";
-import {NotifyResponse, ResponseError, ResponseSuccess} from "@utils/response";
+import {NotifyResponse, ResponseError, ResponseSuccess} from "@shared/response";
 import transformerKey from "@shared/transformer";
-import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort";
+import {ISortOptions, SortOptions, sortOptionsKeys} from "@shared/sort";
 import {IRecipe} from "@models/recipe";
 import {RecipeService} from "@services/recipe.service";
 

@@ -2,7 +2,7 @@ import { IUser } from "@models/user";
 import {IRecipe} from "@models/recipe";
 import { IBookmark, Bookmark } from "@models/bookmark";
 import {Types} from "mongoose";
-import {SortOptions} from "@utils/sort";
+import {SortOptions} from "@shared/sort";
 
 export class BookmarkService {
     user: IUser
