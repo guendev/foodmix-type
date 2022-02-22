@@ -1,4 +1,4 @@
-import { Document, Schema, model, PopulatedDoc } from 'mongoose'
+import { Document, Schema, model, PopulatedDoc, Model } from 'mongoose'
 import {IUser} from "@models/user";
 import {IRecipe} from "@models/recipe";
 
@@ -25,4 +25,4 @@ const schema = new Schema<IBookmark>({
     }
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
-export const Bookmark = model<IBookmark>('Bookmark', schema)
+export const Bookmark: Model<IBookmark> = model<IBookmark>('Bookmark', schema)

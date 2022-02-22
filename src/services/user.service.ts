@@ -1,5 +1,5 @@
 import {IUser, User} from '@models/user'
-import { SortOptions } from "@utils/sort"
+import { SortOptions } from "@shared/sort"
 
 class UserService {
     constructor() {}

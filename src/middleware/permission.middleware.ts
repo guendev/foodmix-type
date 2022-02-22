@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express"
-import {NotifyResponse, ResponseError} from "@utils/response"
+import {NotifyResponse, ResponseError} from "@shared/response"
 import StatusCodes from "http-status-codes";
 
 const { UNAUTHORIZED } = StatusCodes
