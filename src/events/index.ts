@@ -1,5 +1,7 @@
 import upload from './upload'
+import recipe from './recipe'
 
 export default {
-    upload
+    upload,
+    recipe
 } as const

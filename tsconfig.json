@@ -87,6 +87,9 @@
       "@server": [
         "src/server"
       ],
+      "@redis": [
+        "src/redis"
+      ],
       "@services/*": [
         "src/services/*"
       ],

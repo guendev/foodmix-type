@@ -1,13 +1,15 @@
-import './environment';
+import './environment'
 
-import express, {Express} from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import path from "path";
+import express, {Express} from "express"
+import cors from "cors"
+import cookieParser from "cookie-parser"
+import path from "path"
+
+import requestIp from 'request-ip'
 
 import database from './database'
-import authMiddleware from "@middleware/auth.middleware";
-import routes from "@routes/index";
+import authMiddleware from "@middleware/auth.middleware"
+import routes from "@routes/index"
 
 // crosss
 const whitelist: [string] = ['']
@@ -36,6 +38,8 @@ async function initServer(): Promise<Express> {
     /***********************************************************************************
      *                                  Global Middleware
      **********************************************************************************/
+    // lấy ip của user: req.clientIp
+    app.use(requestIp.mw())
     app.use(authMiddleware)
 
     /***********************************************************************************

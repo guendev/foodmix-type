@@ -19,9 +19,11 @@ import {mergeModQuery} from "@shared/permission";
 import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort";
 import {BookmarkService} from "@services/bookmark.service";
 import {IReviewInput, ReviewService} from "@services/review.service";
-import {IReview} from "@models/review";
+import {IReview} from "@models/review"
 
 const { OK, NOT_FOUND } = StatusCodes
+
+import Events from '@events'
 
 const create = async (req: Request, res: Response): Promise<Response> => {
     const form: IRecipeInput = transformerKey<IRecipeInput>(req.body,IRecipeInputKeys)
@@ -96,6 +98,10 @@ const single = async (req: Request, res: Response): Promise<Response> =>{
     if(!recipe) {
         return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.HIDDEN))
     }
+
+    req.clientIp
+    // sự kiện view công thức
+    Events.recipe.viewRecipe(recipe, req)
     return res.status(OK).json(new ResponseSuccess(recipe))
 }
 
