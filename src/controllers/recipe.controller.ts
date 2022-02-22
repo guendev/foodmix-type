@@ -18,7 +18,8 @@ import {ParamsDictionary} from "express-serve-static-core";
 import {mergeModQuery} from "@shared/permission";
 import {ISortOptions, SortOptions, sortOptionsKeys} from "@utils/sort";
 import {BookmarkService} from "@services/bookmark.service";
-import {ReviewService} from "@services/review.service";
+import {IReviewInput, ReviewService} from "@services/review.service";
+import {IReview} from "@models/review";
 
 const { OK, NOT_FOUND } = StatusCodes
 
@@ -144,6 +145,23 @@ const getManyReviews = async ({ params, query }: Request, res: Response) => {
     return res.status(OK).json(new ResponseSuccess(reviews))
 }
 
+const postReview = async ({ user, params, body }: Request, res: Response): Promise<Response> => {
+    const recipe = await RecipeService.getOne({ slug: params.id })
+    if(!recipe) {
+        return res.status(NOT_FOUND).json(new ResponseError( 'Công thức không tồn tại', NotifyResponse.NOTIFY))
+    }
+
+    let form: IReviewInput = {
+        content: body.content,
+        totalRating: body.totalRating,
+        user: user!._id,
+        recipe: recipe._id
+    }
+
+    const review: IReview = await ReviewService.add(form)
+    return res.status(OK).json(new ResponseSuccess(review, 'Đánh giá thành công', NotifyResponse.NOTIFY))
+}
+
 export default {
     create,
     update,
@@ -153,5 +171,6 @@ export default {
     remove,
     random,
     bookmark,
-    getManyReviews
+    getManyReviews,
+    postReview
 }

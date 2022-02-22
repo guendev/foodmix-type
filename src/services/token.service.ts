@@ -21,9 +21,13 @@ export const readToken = (token: string): JWTPayload => {
 }
 
 export const readUser = async (token: string): Promise<IUser | undefined> => {
-    const jwtPayload: JWTPayload = readToken(token)
-    if (typeof jwtPayload === "object") {
-        return await UserService.getOne({ email: jwtPayload!.email })
+    try {
+        const jwtPayload: JWTPayload = readToken(token)
+        if (jwtPayload) {
+            return await UserService.getOne({ email: (jwtPayload as IUser).email })
+        }
+    } catch (_) {
+        return undefined
     }
 }
 

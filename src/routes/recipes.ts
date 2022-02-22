@@ -4,6 +4,7 @@ import {validator} from "@validator/index"
 import controller from '@controllers/recipe.controller'
 import permission from "@middleware/permission.middleware";
 import {sortValidator} from "@validator/sort.validation";
+import {createReview} from "@validator/reviews.validation";
 
 
 // Constants
@@ -42,6 +43,9 @@ router.post(p.create, permission('*'), createRecipe, validator, controller.creat
 router.patch(p.single, permission('*'), createRecipe, validator, controller.update)
 router.delete(p.single, permission('*'), controller.remove)
 router.post(p.bookmark, permission('*'), controller.bookmark)
+
+// Đăng review
+router.post(p.reviews, permission('*'), createReview, validator, controller.postReview)
 
 // Export default
 export default router;
