@@ -16,8 +16,12 @@ export interface IRecipe extends Document {
     stepper: IStepperDocument[]
     time: string
     preparation: string
+
+    // số lần bình luận
     countRating: number
+    // tổng số điểm
     totalRating: number
+    // => điểm rating là điểm của trường ảo
     views: number
     createdAt: number
 }

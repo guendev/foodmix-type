@@ -165,6 +165,9 @@ const postReview = async ({ user, params, body }: Request, res: Response): Promi
     }
 
     const review: IReview = await ReviewService.add(form)
+
+    // sự kiện update lại recipe
+    Events.recipe.addReview(recipe, review)
     return res.status(OK).json(new ResponseSuccess(review, 'Đánh giá thành công', NotifyResponse.NOTIFY))
 }
 

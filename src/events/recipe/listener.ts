@@ -4,6 +4,8 @@ import {IRecipe, Recipe} from "@models/recipe"
 
 import redis from "@redis"
 import {HistoryService} from "@services/history.service";
+import {IReview} from "@models/review";
+import recipe from "@events/recipe/index";
 
 const view = async (recipe: IRecipe, { user, clientIp }: Request) => {
     if(!clientIp) {
@@ -31,6 +33,16 @@ const view = async (recipe: IRecipe, { user, clientIp }: Request) => {
     }
 }
 
+const rate = async (recipe: IRecipe, review: IReview) => {
+    await Recipe.findByIdAndUpdate(recipe._id, {
+        $inc: {
+            countRating: 1,
+            totalRating: review.totalRating
+        }
+    })
+}
+
 export default {
-    view
+    view,
+    rate
 }

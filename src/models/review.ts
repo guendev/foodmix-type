@@ -7,7 +7,6 @@ export interface IReview extends Document {
     recipe: PopulatedDoc<IRecipe>
     content: string
     totalRating: number
-    rating: number
     createdAt: number
 }
 
