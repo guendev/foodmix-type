@@ -8,7 +8,7 @@ class CategoryService {
     }
 
     static async getAll(): Promise<ICategory[]> {
-        return Category.find().lean<ICategory[]>()
+        return Category.find().lean<ICategory[]>().exec()
     }
 
     static async create(category: ICategoryInput): Promise<ICategory|null> {
@@ -16,7 +16,7 @@ class CategoryService {
     }
 
     static async update(filter: object, category: ICategoryInput): Promise<ICategory|null> {
-        return Category.findOneAndUpdate(filter, category, { returnOriginal: false }).lean<ICategory>()
+        return Category.findOneAndUpdate(filter, category, { new: true }).lean<ICategory>().exec()
     }
 
     static async delete(filter: object): Promise<ICategory|null> {

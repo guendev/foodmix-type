@@ -9,20 +9,20 @@ class UserService {
      * @param exclude
      * @returns {Promise<IUser>}
      */
-    static async getOne(filter: object, exclude = '-password'): Promise<IUser> {
+    static async getOne(filter: object, exclude = '-password') {
         return User.findOne(filter).select(exclude).lean<IUser>()
     }
 
-    static async getMany({ order, sortOptions }: { order: string, sortOptions: SortOptions }): Promise<IUser[]> {
+    static async getMany({ order, sortOptions }: { order: string, sortOptions: SortOptions }) {
         return User.find()
             .sort(Object.assign({}, sortOptions.sort, { _id: -1 }))
             .skip(sortOptions.skip)
             .limit(sortOptions.limit)
-            .lean<IUser[]>()
+            .lean()
     }
 
-    static async count(): Promise<number> {
-        return User.countDocuments().lean<number>()
+    static async count() {
+        return User.find().countDocuments().lean()
     }
 
     static async create(input: IUserCreateInput): Promise<IUser> {
@@ -34,8 +34,8 @@ class UserService {
         return User.create(input)
     }
 
-    static async update(filter: object, input: IUserUpdateInput): Promise<IUser>{
-        return User.findOneAndUpdate(filter, input).lean<IUser>()
+    static async update(filter: object, input: IUserUpdateInput) {
+        return User.findOneAndUpdate(filter, input).lean()
     }
 
 }
