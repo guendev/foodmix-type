@@ -6,7 +6,6 @@ import {Types} from "mongoose"
 import {ISortOptions, SortOptions, sortOptionsKeys} from "@shared/sort"
 import {BookmarkService} from "@services/bookmark.service"
 import {NotifyResponse, ResponseError, ResponseSuccess} from '@shared/response'
-import user from "@graphql/types/user";
 
 const { OK, NOT_FOUND, FORBIDDEN } = StatusCodes
 
