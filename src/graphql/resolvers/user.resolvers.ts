@@ -1,12 +1,13 @@
 import { IResolvers } from '@graphql-tools/utils'
 import {wrapperGraphql} from "@actions/wrapper";
 import {signinAction, signupAction} from "@actions/mutations/user.mutation";
+import {meAction} from "@actions/query/user.query";
 
 const userResolver: IResolvers = {
 
     Query: {
         me: (_, __, { user }) => {
-           return user
+           return wrapperGraphql(() => meAction(user))
         }
     },
 
