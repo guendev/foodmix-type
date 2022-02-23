@@ -62,8 +62,31 @@ CDN_DOMAIN=
 - `UNAUTHORIZED` xảy ra khi truy cập vào 1 request yêu cầu đăng nhập.
 - `FORBIDDEN` xảy ra khi người đăng nhập không đủ quyền yêu cầu request.
 - `NOT_FOUND` xảy ra khi truy cập vào 1 tài nguyên không tồn tại.
-> Ngoài ra tuỳ vào trường hợp, ngoài trừ `NOT_FOUND` chúng tôi sẽ trả về lỗi có mã `NOTIFY` chứa mã thông báo.
 
+### Thông báo
+> Chúng tôi hỗ trợ Notify qua API và Realtime.
+#### Restful API
+Mọi Response trả về đều có format:
+```typescript
+interface IResponseJson {
+    code: number
+    data: any
+    msg?: string
+}
+```
+- Tuỳ vào `code` tả về. Bạn có thể handle tự động thông báo. Hiện tại nếu thông báo từ server chúng tôi sẽ trả về `code = 1`. Bạn có thể xem thêm tại [`NotifyResponse`](https://github.com/dnstylish/foodmix-type/blob/master/src/shared/response.ts).
+- Cách này chỉ phù hợp với một client duy nhất. Không thể đồng bộ thông báo trên mọi tài khoản.
+#### Realtime
+> Chúng tôi sử dụng Subscription để tạo ra các đăng ký thông báo trên mỗi tài khoản.
+```graphql
+type Notify {
+    user: String! # _id
+    error: Boolean
+    msg: String!
+}
+```
+- Bạn có thể subscription notify để lấy thông báo. Chúng sẽ tự động phát hiện user hiện tại.
+- Thông báo sẽ đồng bộ trên mọi thiết bị đăng nhập cùng một tài khoản.
 
 ### Development
 Môi trường phát triển hoặc test
