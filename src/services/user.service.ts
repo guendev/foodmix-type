@@ -18,7 +18,6 @@ class UserService {
             .sort(Object.assign({}, sortOptions.sort, { _id: -1 }))
             .skip(sortOptions.skip)
             .limit(sortOptions.limit)
-            .lean()
     }
 
     static async count() {
