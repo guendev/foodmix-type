@@ -4,7 +4,7 @@ const slug = require('mongoose-slug-generator')
 
 export interface ICategory extends Document {
     name: string,
-    slug: string,
+    slug?: string,
     avatar: string,
     content: string
 }

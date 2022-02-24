@@ -17,6 +17,7 @@ class CategoryService {
 
     static async update(filter: object, category: ICategoryInput): Promise<ICategory|null> {
         return Category.findOneAndUpdate(filter, category, { returnOriginal: false })
+
     }
 
     static async delete(filter: object): Promise<ICategory|null> {
