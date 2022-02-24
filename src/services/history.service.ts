@@ -11,12 +11,12 @@ class HistoryService {
         this.user = user
     }
 
-    async add(recipe: IRecipe): Promise<IHistory> {
+    async add(recipe: IRecipe) {
         return History.findOneAndUpdate(
             { user: this.user._id, recipe: recipe._id },
             { createdAt: Date.now() },
             { upsert: true }
-        ).lean<IHistory>()
+        )
     }
 
     async getMany(options: SortOptions): Promise<IHistory[]> {
@@ -24,15 +24,14 @@ class HistoryService {
             .sort(options.sortFilter)
             .skip(options.skip)
             .limit(options.limitFilter)
-            .lean<IHistory[]>()
     }
 
     async delete(_id: Types.ObjectId): Promise<IHistory|null> {
-        return History.findOneAndDelete({ _id, user: this.user._id }).lean<IHistory|null>()
+        return History.findOneAndDelete({ _id, user: this.user._id })
     }
 
     async deleteALl() {
-        return History.deleteMany({ user: this.user._id}).lean()
+        return History.deleteMany({ user: this.user._id})
     }
 
     async count(): Promise<number> {

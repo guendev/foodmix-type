@@ -2,8 +2,7 @@ import { gql } from "apollo-server-express"
 
 const userDefs = gql`
     
-    type User implements Document {
-        _id: ID!
+    type User {
         id: ID
         
         name: String!

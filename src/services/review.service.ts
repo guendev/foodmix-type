@@ -18,7 +18,6 @@ export class ReviewService {
             .sort(options.sortFilter)
             .skip(options.skip)
             .limit(options.limitFilter)
-            .lean<IReview[]>()
     }
 
     static get RELATIONSHIP() {

@@ -8,7 +8,7 @@ import path from "path"
 import requestIp from 'request-ip'
 
 import database from './database'
-import authMiddleware from "@middleware/auth.middleware"
+import { authMw } from "@middleware/auth.middleware"
 import routes from "@routes/index"
 
 // crosss
@@ -40,7 +40,7 @@ async function initServer(): Promise<Express> {
      **********************************************************************************/
     // lấy ip của user: req.clientIp
     app.use(requestIp.mw())
-    app.use(authMiddleware)
+    app.use(authMw)
 
     /***********************************************************************************
      *                                  Router

@@ -4,11 +4,11 @@ class CategoryService {
     constructor() {}
 
     static async getOne(filter: object): Promise<ICategory|null> {
-        return Category.findOne(filter).lean<ICategory>()
+        return Category.findOne(filter)
     }
 
     static async getAll(): Promise<ICategory[]> {
-        return Category.find().lean<ICategory[]>().exec()
+        return Category.find()
     }
 
     static async create(category: ICategoryInput): Promise<ICategory|null> {
@@ -16,7 +16,8 @@ class CategoryService {
     }
 
     static async update(filter: object, category: ICategoryInput): Promise<ICategory|null> {
-        return Category.findOneAndUpdate(filter, category, { new: true }).lean<ICategory>().exec()
+        return Category.findOneAndUpdate(filter, category, { returnOriginal: false })
+
     }
 
     static async delete(filter: object): Promise<ICategory|null> {

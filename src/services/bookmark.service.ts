@@ -28,7 +28,7 @@ export class BookmarkService {
     }
 
     async deleteALl() {
-        return Bookmark.deleteMany({ user: this.user._id }).lean()
+        return Bookmark.deleteMany({ user: this.user._id })
     }
 
     async exist(recipe: IRecipe) {
@@ -45,7 +45,6 @@ export class BookmarkService {
             .sort(options.sortFilter)
             .skip(options.skip)
             .limit(options.limitFilter)
-            .lean<IBookmark[]>()
     }
 
     static get RELATIONSHIP(): { [key: string]: IRelationship } {
