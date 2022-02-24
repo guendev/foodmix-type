@@ -15,19 +15,19 @@ import {bookmarkAction} from "@actions/mutations/bookmark.mutation";
 import {manyReviewsActions} from "@actions/query/reviews.query";
 import { postReviewAction } from "@actions/mutations/review.mutation";
 
-export const create = async (req: Request, res: Response): Promise<Response> => {
+const create = async (req: Request, res: Response): Promise<Response> => {
     const form: IRecipeInput = transformerKey<IRecipeInput>(req.body,IRecipeInputKeys)
 
     return wrapperAPI(() => createRecipeAction(form, req), res)
 }
 
-export const update = async (req: Request, res: Response): Promise<Response> => {
+const update = async (req: Request, res: Response): Promise<Response> => {
     const form: IRecipeInput = transformerKey<IRecipeInput>(req.body,IRecipeInputKeys)
 
     return wrapperAPI(() => updateRecipeAction(req.params.id, form, req), res)
 }
 
-export const search = async (req: Request, res: Response): Promise<Response> => {
+const search = async (req: Request, res: Response): Promise<Response> => {
 
     // chứa keyword + category + page + limit
     const _form: ISearchRecipesOptions = transformerKey<ISearchRecipesOptions>(req.query, SearchRecipesOptionsKeys)
@@ -35,7 +35,7 @@ export const search = async (req: Request, res: Response): Promise<Response> => 
     return wrapperAPI(() => searchRecipeAction(_form), res)
 }
 
-export const getMany = async (req: Request, res: Response): Promise<Response> => {
+const getMany = async (req: Request, res: Response): Promise<Response> => {
 
     let _form: ISortOptions = transformerKey<ISortOptions>(req.query, sortOptionsKeys)
 
@@ -43,28 +43,28 @@ export const getMany = async (req: Request, res: Response): Promise<Response> =>
 
 }
 
-export const single = async (req: Request, res: Response): Promise<Response> =>{
+const single = async (req: Request, res: Response): Promise<Response> =>{
     return wrapperAPI(() => recipeAction(req.params.id, req), res)
 }
 
-export const remove = async ({ params, user }: Request, res: Response): Promise<Response> => {
+const remove = async ({ params, user }: Request, res: Response): Promise<Response> => {
     return wrapperAPI(() => removeRecipeAction(params.id, user), res)
 }
 
-export const random = async (req: Request, res: Response): Promise<Response> => {
+const random = async (req: Request, res: Response): Promise<Response> => {
     return wrapperAPI(() => randomRecipesAction(Number(req.query.size)), res)
 }
 
-export const bookmark = async ({ params, user }: Request, res: Response): Promise<Response> => {
+const bookmark = async ({ params, user }: Request, res: Response): Promise<Response> => {
     return wrapperAPI(() => bookmarkAction(params.slug!, user!), res)
 }
 
-export const getManyReviews = async ({ params, query }: Request, res: Response) => {
+const getManyReviews = async ({ params, query }: Request, res: Response) => {
     let _form: ISortOptions = transformerKey<ISortOptions>(query, sortOptionsKeys)
     return wrapperAPI(() => manyReviewsActions(params.id, _form), res)
 }
 
-export const postReview = async ({ user, params, body }: Request, res: Response): Promise<Response> => {
+const postReview = async ({ user, params, body }: Request, res: Response): Promise<Response> => {
     let form = {
         content: body.content,
         totalRating: body.totalRating,
@@ -72,3 +72,16 @@ export const postReview = async ({ user, params, body }: Request, res: Response)
     }
     return wrapperAPI(() => postReviewAction(params.id, form), res)
 }
+
+export default {
+    create,
+    update,
+    search,
+    getMany,
+    single,
+    remove,
+    random,
+    bookmark,
+    getManyReviews,
+    postReview
+} as const

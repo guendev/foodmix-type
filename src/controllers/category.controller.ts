@@ -37,4 +37,4 @@ export default {
     create,
     update,
     recipes
-} as const
+}

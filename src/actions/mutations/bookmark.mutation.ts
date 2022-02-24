@@ -1,6 +1,6 @@
 import StatusCodes from "http-status-codes"
 import {IWrapperResponse, WrapperError} from "@actions/wrapper";
-import {NotifyResponse, ResponseSuccess} from "@shared/response";
+import {NotifyResponse} from "@shared/response";
 import {IUser} from "@models/user";
 import {RecipeService} from "@services/recipe.service";
 import {BookmarkService} from "@services/bookmark.service";
