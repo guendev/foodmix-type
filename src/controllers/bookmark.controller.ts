@@ -3,8 +3,9 @@ import {Request, Response} from 'express'
 
 import {ISortOptions, sortOptionsKeys} from "@shared/sort"
 import {wrapperAPI} from "@actions/wrapper";
-import {manyBookmarksAction } from "@actions/query/bookmark.query";
+import {manyBookmarksAction} from "@actions/query/bookmark.query";
 import {deleteAllBookmarksAction, removeBookmarkAction} from "@actions/mutations/bookmark.mutation";
+
 
 
 const many = async ({ query, user }: Request, res: Response) => {
