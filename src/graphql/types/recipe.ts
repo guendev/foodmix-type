@@ -34,7 +34,16 @@ export default gql`
         image: String
     }
     
+    input SearchRecipeFilter {
+        keyword: String
+        category: String
+        page: Int! @constraint(min: 0)
+        limit: Int! @constraint(min: 0, max: 20)
+    }
+    
     type Query {
         getRecipe(id: String!): Recipe!
+        getRecipes(filter: SortOption!): [Recipe]!
+        getSearchRecipes(filter: SearchRecipeFilter!): [Recipe]!
     }
 `

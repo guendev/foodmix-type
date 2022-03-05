@@ -9,6 +9,7 @@ export default gql`
         slug: String!
         avatar: String!
         content: String!
+        icon: String!
 
         createdAt: Float!
     }
@@ -22,6 +23,7 @@ export default gql`
     type Query {
         getAllCategories: [Category]!
         getOneCategory(id: String!): Category!
+        getRecipesBycategories(slug: String! filter: SortOption!): [Recipe]!
     }
     
     type Mutation {

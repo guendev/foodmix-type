@@ -14,14 +14,12 @@ class RecipeService {
             .sort(sortOptions.sortFilter)
             .skip(sortOptions.skip)
             .limit(sortOptions.limitFilter)
-            .lean<IRecipe[]>()
     }
 
     static async search(sortOptions: SearchRecipesOptions): Promise<IRecipe[]> {
         return Recipe.find(sortOptions.filter)
             .skip(sortOptions.skip)
             .limit(sortOptions.limit)
-            .lean<IRecipe[]>()
     }
 
     static async count(filter: object): Promise<number> {
@@ -37,7 +35,7 @@ class RecipeService {
     }
 
     static async delete(filter: object): Promise<IRecipe|null> {
-        return Recipe.findOneAndDelete(filter).lean<IRecipe>()
+        return Recipe.findOneAndDelete(filter)
     }
 
     static async random(size?: number) {
