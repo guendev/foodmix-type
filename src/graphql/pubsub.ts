@@ -1,10 +1,7 @@
 import { RedisPubSub } from "graphql-redis-subscriptions"
 
-const pubsub = new RedisPubSub()
+export const pubsub = new RedisPubSub()
 
-const channel: { [key: string]: string } = {}
-
-export default {
-    pubsub,
-    channel
-} as const
+export const channel: { [key: string]: string } = {
+    NOTIFY: "NOTIFY"
+}

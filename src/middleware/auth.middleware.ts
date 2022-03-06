@@ -3,13 +3,12 @@ import { readUser } from "@services/token.service";
 import {IUser} from "@models/user";
 
 const authMw = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    req.user = await userFormRequest(req)
+    req.user = await userFormRequest(req.headers.authorization || '')
     next()
 }
 
 
-const userFormRequest = async (req: Request): Promise<IUser|undefined> => {
-    const token = req.headers.authorization || ''
+const userFormRequest = async (token: String): Promise<IUser|undefined> => {
     if (token) {
         return readUser(token.replace('Bearer ', ''))
     }

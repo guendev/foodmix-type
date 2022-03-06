@@ -7,6 +7,7 @@ import { SubscriptionServer } from 'subscriptions-transport-ws'
 
 import schema from './graphql'
 import initServer from "@server";
+import {userFormRequest} from "@middleware/auth.middleware";
 
 async function startApolloServer() : Promise<void> {
 
@@ -24,7 +25,14 @@ async function startApolloServer() : Promise<void> {
             execute,
             subscribe,
             onConnect: async (option: Request, webSocket: any) => {
-                // middleware
+                const token = option.Authorization || ''
+                let user = undefined
+                if (token) {
+                    user = await userFormRequest(token.replace('Bearer ', ''))
+                }
+                return {
+                    user
+                }
             },
             onDisconnect: () => console.log('Websocket CONNECTED')
         },

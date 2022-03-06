@@ -1,12 +1,12 @@
 import { Document, Schema, model } from 'mongoose'
-
 const slug = require('mongoose-slug-generator')
 
 export interface ICategory extends Document {
     name: string,
     slug?: string,
     avatar: string,
-    content: string
+    content: string,
+    icon: string
 }
 
 const schema = new Schema<ICategory>({
@@ -28,6 +28,10 @@ const schema = new Schema<ICategory>({
     content: {
         type: String,
         default: ''
+    },
+    icon: {
+        type: String,
+        default: 'https://i.imgur.com/sJapZxD.png'
     }
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } })
 

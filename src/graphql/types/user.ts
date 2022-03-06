@@ -43,9 +43,21 @@ const userDefs = gql`
         me: User
     }
     
+    type Notify {
+        user: User!
+        msg: String!
+        error: Boolean
+    }
+    
     type Mutation {
         signup(input: SignUpInput!): Token!
         signin(input: SignInInput!): Token!
+    }
+    
+    type Subscription {
+        
+        subNotify: Notify
+        
     }
 `
 export default userDefs
