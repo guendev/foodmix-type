@@ -10,7 +10,7 @@ class UserService {
      * @returns {Promise<IUser>}
      */
     static async getOne(filter: object, exclude = '-password') {
-        return User.findOne(filter).select(exclude).lean<IUser>()
+        return User.findOne(filter).select(exclude)
     }
 
     static async getMany({ order, sortOptions }: { order: string, sortOptions: SortOptions }) {

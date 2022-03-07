@@ -5,6 +5,7 @@ import {meAction} from "@actions/query/user.query";
 import {withFilter} from "graphql-subscriptions";
 
 import {channel, pubsub} from "../pubsub"
+import {AuthenticationError} from "apollo-server-express";
 
 const userResolver: IResolvers = {
 
@@ -27,11 +28,14 @@ const userResolver: IResolvers = {
     Subscription: {
         subNotify: {
             subscribe: withFilter(
-                (_, args) => {
+                (_, args, { user }) => {
+                    if (!user) {
+                        throw new AuthenticationError('Yêu cầu đăng nhập')
+                    }
                     return pubsub.asyncIterator(channel.NOTIFY)
                 },
                 (payload, variables, { user }) => {
-                    return payload.notify.user.id === user.id
+                    return payload.subNotify.user.id === user.id
                 }
             )
         },

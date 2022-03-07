@@ -1,16 +1,21 @@
 import {IRecipe, Recipe} from "@models/recipe";
 import {SortOptions} from "@shared/sort";
 import {Types} from "mongoose";
+import {User} from "@models/user";
+import {Category} from "@models/category";
+import {IRelationship} from "@shared/relationship";
 
 class RecipeService {
     constructor() {}
 
-    static async getOne(filter: object): Promise<IRecipe|null> {
-        return Recipe.findOne(filter).lean<IRecipe>();
+    static async getOne(filter: object, populates: IRelationship[] = []): Promise<IRecipe|null> {
+        return Recipe.findOne(filter)
+            .populate(populates)
     }
 
-    static async getMany(filter: object, sortOptions: SortOptions): Promise<IRecipe[]> {
+    static async getMany(filter: object, sortOptions: SortOptions, populates: IRelationship[] = []): Promise<IRecipe[]> {
         return Recipe.find(filter)
+            .populate(populates)
             .sort(sortOptions.sortFilter)
             .skip(sortOptions.skip)
             .limit(sortOptions.limitFilter)
@@ -52,6 +57,19 @@ class RecipeService {
             { $unwind: '$user' }
         ])
     }
+
+    static get RELATIONSHIP() {
+        return {
+            USER: {
+                model: User,
+                path: 'user'
+            },
+            CATEGORY: {
+                model: Category,
+                path: 'category'
+            }
+        }
+    }
 }
 
 interface IIngredient {
@@ -61,8 +79,9 @@ interface IIngredient {
 }
 
 interface IStepper {
+    name: string,
     content: string,
-    image: string
+    image?: string
 }
 
 interface IRecipeInput {

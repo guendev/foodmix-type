@@ -12,7 +12,7 @@ import {ISortOptions, SortOptions} from "@shared/sort";
 const { OK, FORBIDDEN, BAD_REQUEST, NOT_FOUND } = StatusCodes
 
 export const recipeAction = async (slug: string, req: Request): Promise<IWrapperResponse> => {
-    const recipe = await RecipeService.getOne({ slug })
+    const recipe = await RecipeService.getOne({ slug }, [RecipeService.RELATIONSHIP.CATEGORY, RecipeService.RELATIONSHIP.USER])
 
     if(!recipe) {
         throw new WrapperError({ code: NotifyResponse.HIDDEN, msg: 'Món ăn không tồn tại', status: NOT_FOUND })
@@ -45,7 +45,7 @@ export const searchRecipeAction = async (_form: ISearchRecipesOptions): Promise<
 
 export const manyRecipesAction = async (_form: ISortOptions): Promise<IWrapperResponse> => {
     let form: SortOptions = SortOptions.fromJSON(_form)
-    const recipes: IRecipe[] = await RecipeService.getMany({}, form)
+    const recipes: IRecipe[] = await RecipeService.getMany({}, form, [RecipeService.RELATIONSHIP.CATEGORY, RecipeService.RELATIONSHIP.USER])
     return {
         data: recipes
     }

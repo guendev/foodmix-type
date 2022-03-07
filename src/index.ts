@@ -29,12 +29,15 @@ async function startApolloServer() : Promise<void> {
                 let user = undefined
                 if (token) {
                     user = await userFormRequest(token.replace('Bearer ', ''))
+                    if (user) {
+                        console.log('Websocket CONNECTED with user: ' + user.id)
+                    }
                 }
                 return {
                     user
                 }
             },
-            onDisconnect: () => console.log('Websocket CONNECTED')
+            onDisconnect: () => console.log('Websocket DISCONNECTED')
         },
         { server: httpServer, path: '/graphql' }
     )

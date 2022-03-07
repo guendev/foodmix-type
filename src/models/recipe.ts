@@ -75,6 +75,10 @@ const schema = new Schema<IRecipe>({
     stepper: {
         type: [
             {
+                name: {
+                    type: String,
+                    default: "Bước Làm"
+                },
                 content: String,
                 image: String,
                 _id: false

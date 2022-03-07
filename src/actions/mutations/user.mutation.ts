@@ -10,7 +10,7 @@ import {matchPassword} from "@services/password.service"
 const { OK, FORBIDDEN, BAD_REQUEST } = StatusCodes
 
 export const signupAction = async (form: IUserCreateInput): Promise<IWrapperResponse> => {
-    const _check: IUser = await UserService.getOne({ email: form.email })
+    const _check = await UserService.getOne({ email: form.email })
     if(_check) {
         // user đã tồn tại
         // Todo: throw custom error
@@ -31,7 +31,7 @@ export const signupAction = async (form: IUserCreateInput): Promise<IWrapperResp
 }
 
 export const signinAction = async (form: IUserSignInInput): Promise<IWrapperResponse> => {
-    const user: IUser = await UserService.getOne({ email: form.email }, '')
+    const user = await UserService.getOne({ email: form.email }, '')
     if(!user) {
         throw new WrapperError({ code: NotifyResponse.NOTIFY, msg: 'Thành viên không tồn tại', status: BAD_REQUEST })
     }

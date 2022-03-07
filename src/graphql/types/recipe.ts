@@ -3,7 +3,7 @@ import { gql } from "apollo-server-express"
 export default gql`
 
     type Recipe {
-        id: ID
+        id: ID!
 
         name: String!
         slug: String!
@@ -30,6 +30,7 @@ export default gql`
     }
 
     type Stepper {
+        name: String!,
         content: String!,
         image: String
     }

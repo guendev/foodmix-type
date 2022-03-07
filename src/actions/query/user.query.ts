@@ -7,7 +7,7 @@ const { OK, UNAUTHORIZED } = StatusCodes
 
 export const meAction = (user?: IUser): IWrapperResponse => {
     if(!user) {
-        throw new WrapperError({ code: NotifyResponse.HIDDEN, status: UNAUTHORIZED })
+        throw new WrapperError({ code: NotifyResponse.HIDDEN, status: UNAUTHORIZED, msg: 'Hiện không đăng nhập' })
     }
   return {
       data: user

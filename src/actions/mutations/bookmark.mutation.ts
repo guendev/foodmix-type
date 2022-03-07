@@ -5,6 +5,7 @@ import {IUser} from "@models/user";
 import {RecipeService} from "@services/recipe.service";
 import {BookmarkService} from "@services/bookmark.service";
 import {Types} from "mongoose";
+import {channel, pubsub} from "@graphql/pubsub";
 
 const { OK, FORBIDDEN, BAD_REQUEST, NOT_FOUND } = StatusCodes
 
@@ -22,13 +23,17 @@ export const bookmarkAction = async (slug: string, user: IUser): Promise<IWrappe
     if(check) {
         // da ton tai => xoa
         await bookmark.delete(check._id)
+
+        // notify
+        await pubsub.publish(channel.NOTIFY, { subNotify: { user: user, msg: 'Huỷ thành công' } })
         return {
-            data: check,
+            data: null,
             msg: 'Huỷ thành công',
             code: NotifyResponse.NOTIFY
         }
     } else {
         const result = await bookmark.store(recipe)
+        await pubsub.publish(channel.NOTIFY, { subNotify: { user: user, msg: 'Thêm thành công' } })
         return {
             data: result,
             msg: 'Thêm thành công',

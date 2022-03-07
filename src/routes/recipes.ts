@@ -36,6 +36,8 @@ router.get(p.random, controller.random)
 
 router.get(p.reviews, sortValidator, validator, controller.getManyReviews)
 
+router.get(p.bookmark, permission('*'), controller.checkBookmark)
+
 /***********************************************************************************
  *                                  Mutation
  **********************************************************************************/

@@ -66,25 +66,25 @@ export const wrapperGraphql = async <T>(action: WrapperAction, callback?: Wrappe
       if(e.options) {
           const { status, msg, code }: IWrapperResponse = e.options
 
-          if(!msg) {
+          if(status === FORBIDDEN) {
               // Lỗi mà không có message
               throw new ForbiddenError('Yêu cầu không hợp lệ')
           }
 
           // Lỗi đăng nhập
           if(status === UNAUTHORIZED) {
-              throw new AuthenticationError(msg)
+              throw new AuthenticationError(msg!)
           }
 
           if(status === NOT_FOUND) {
-              throw new ApolloError(msg, 'NOT_FOUND')
+              throw new ApolloError(msg!, 'NOT_FOUND')
           }
 
           if(code === NotifyResponse.NOTIFY && msg) {
               throw new ApolloError(msg, 'NOTIFY')
           }
 
-          throw new ApolloError(msg, 'EMPTY')
+          throw new ApolloError(msg!, 'EMPTY')
       }
       throw new ApolloError('Yêu cầu không hợp lệ', 'EMPTY')
   }

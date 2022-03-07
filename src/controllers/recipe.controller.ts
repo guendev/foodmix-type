@@ -14,6 +14,7 @@ import {createRecipeAction, removeRecipeAction, updateRecipeAction} from "@actio
 import {bookmarkAction} from "@actions/mutations/bookmark.mutation";
 import {manyReviewsActions} from "@actions/query/reviews.query";
 import { postReviewAction } from "@actions/mutations/review.mutation";
+import {checkBookmarkAction} from "@actions/query/bookmark.query";
 
 const create = async (req: Request, res: Response): Promise<Response> => {
     const form: IRecipeInput = transformerKey<IRecipeInput>(req.body,IRecipeInputKeys)
@@ -59,6 +60,10 @@ const bookmark = async ({ params, user }: Request, res: Response): Promise<Respo
     return wrapperAPI(() => bookmarkAction(params.slug!, user!), res)
 }
 
+const checkBookmark = async ({ params, user }: Request, res: Response): Promise<Response> => {
+    return wrapperAPI(() => checkBookmarkAction(user!, params.slug!), res)
+}
+
 const getManyReviews = async ({ params, query }: Request, res: Response) => {
     let _form: ISortOptions = transformerKey<ISortOptions>(query, sortOptionsKeys)
     return wrapperAPI(() => manyReviewsActions(params.id, _form), res)
@@ -83,5 +88,6 @@ export default {
     random,
     bookmark,
     getManyReviews,
-    postReview
+    postReview,
+    checkBookmark
 } as const

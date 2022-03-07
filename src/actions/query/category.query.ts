@@ -34,7 +34,7 @@ export const categoryToRecipesAction = async (slug: string, _form: ISortOptions)
 
     let form: SortOptions = SortOptions.fromJSON(_form)
 
-    const recipes: IRecipe[] = await RecipeService.getMany({ category: category._id}, form)
+    const recipes: IRecipe[] = await RecipeService.getMany({ category: category._id}, form, [RecipeService.RELATIONSHIP.CATEGORY, RecipeService.RELATIONSHIP.USER])
 
     return {
         data: recipes
