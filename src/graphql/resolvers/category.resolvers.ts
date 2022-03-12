@@ -10,7 +10,7 @@ const categoryResolver: IResolvers = {
 
         getOneCategory: async (_, { id }, { req }) => wrapperGraphql(() => oneCategoryAction(id)),
 
-        getRecipesBycategories: async (_, { slug, filter }) => wrapperGraphql(() => categoryToRecipesAction(slug, filter))
+        getRecipesByCategory: async (_, { slug, filter }) => wrapperGraphql(() => categoryToRecipesAction(slug, filter))
     },
 
     Mutation: {

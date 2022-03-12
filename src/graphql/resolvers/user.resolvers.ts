@@ -1,7 +1,7 @@
 import { IResolvers } from '@graphql-tools/utils'
 import {wrapperGraphql} from "@actions/wrapper";
 import {signinAction, signupAction} from "@actions/mutations/user.mutation";
-import {meAction} from "@actions/query/user.query";
+import {getProfileAction, getUsersAction, meAction} from "@actions/query/user.query";
 import {withFilter} from "graphql-subscriptions";
 
 import {channel, pubsub} from "../pubsub"
@@ -12,12 +12,14 @@ const userResolver: IResolvers = {
     Query: {
         me: (_, __, { user }) => {
            return wrapperGraphql(() => meAction(user))
-        }
+        },
+        getUsers: (_, { filter }) => wrapperGraphql(() => getUsersAction(filter)),
+
+        getProfile: (_, { id }) => wrapperGraphql(() => getProfileAction(id))
     },
 
     Mutation: {
         signup: async (_: any, { input }) => {
-            console.log(input)
             return wrapperGraphql(() => signupAction(input))
         },
         signin: async (_, { input }) => {

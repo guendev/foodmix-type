@@ -1,5 +1,6 @@
 import {IUser, User} from '@models/user'
 import { SortOptions } from "@shared/sort"
+import {IRelationship} from "@shared/relationship";
 
 class UserService {
     constructor() {}
@@ -13,11 +14,11 @@ class UserService {
         return User.findOne(filter).select(exclude)
     }
 
-    static async getMany({ order, sortOptions }: { order: string, sortOptions: SortOptions }) {
-        return User.find()
-            .sort(Object.assign({}, sortOptions.sort, { _id: -1 }))
+    static async getMany(filter: object, sortOptions: SortOptions) {
+        return User.find(filter)
+            .sort(sortOptions.sortFilter)
             .skip(sortOptions.skip)
-            .limit(sortOptions.limit)
+            .limit(sortOptions.limitFilter)
     }
 
     static async count() {

@@ -23,7 +23,7 @@ export default gql`
     type Query {
         getAllCategories: [Category]!
         getOneCategory(id: String!): Category!
-        getRecipesBycategories(slug: String! filter: SortOption!): [Recipe]!
+        getRecipesByCategory(slug: String! filter: SortOption!): [Recipe]!
     }
     
     type Mutation {

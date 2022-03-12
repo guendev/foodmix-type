@@ -7,6 +7,7 @@ export interface IUser extends Document {
     name: string,
     email: string,
     slug: string,
+    gender: number,
     role: string,
     avatar: string,
     banner: string,
@@ -16,10 +17,7 @@ export interface IUser extends Document {
     countRecipe: number,
     countRating: number,
     totalRating: number,
-    createdAt: number,
-
-    // truong ao
-    rating?: number
+    createdAt: number
 }
 
 export const roles: string[] = ['user','mod','admin','sp_admin']
@@ -44,6 +42,12 @@ const schema = new Schema<IUser>({
         lowercase: true,
         index: true
     },
+    gender: {
+        type: Number,
+        // 1 nam, 2 nữ, 3 ko xác định
+        enum: [1, 2, 3],
+        default: 3
+    },
     role: {
         type: String,
         enum: roles,
@@ -55,7 +59,7 @@ const schema = new Schema<IUser>({
     },
     banner: {
         type: String,
-        default: '/images/theme/banner.svg'
+        default: 'https://i.imgur.com/n8WaHWK.jpg'
     },
     province: {
         type: String
@@ -99,10 +103,6 @@ schema.pre<IUser>('save', function (next) {
     }
     this.password = hashPassword(this.password)
     next()
-})
-
-schema.virtual('rating').get(function (this: IUser): number {
-    return this.totalRating / this.countRating
 })
 
 export const User = model<IUser>('User', schema)

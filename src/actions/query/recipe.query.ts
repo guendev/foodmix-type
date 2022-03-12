@@ -36,7 +36,7 @@ export const searchRecipeAction = async (_form: ISearchRecipesOptions): Promise<
 
     const form = new SearchRecipesOptions(_form)
 
-    const recipes: IRecipe[] = await RecipeService.search(form)
+    const recipes: IRecipe[] = await RecipeService.search(form, [RecipeService.RELATIONSHIP.CATEGORY, RecipeService.RELATIONSHIP.USER])
 
     return {
         data: recipes

@@ -9,6 +9,8 @@ const userDefs = gql`
         email: String!
         slug: String!
 
+        gender: Int
+
         role: String!
         avatar: String
         banner: String
@@ -18,8 +20,6 @@ const userDefs = gql`
         countRecipe: Int
         countRating: Int
         totalRating: Int
-
-        rating: Int
         
         createdAt: Float!
     }
@@ -41,6 +41,8 @@ const userDefs = gql`
     
     type Query {
         me: User
+        getUsers(filter: SortOption!): [User]!
+        getProfile(id: String!): User!
     }
     
     type Notify {

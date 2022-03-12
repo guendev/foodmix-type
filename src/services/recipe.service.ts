@@ -21,8 +21,9 @@ class RecipeService {
             .limit(sortOptions.limitFilter)
     }
 
-    static async search(sortOptions: SearchRecipesOptions): Promise<IRecipe[]> {
+    static async search(sortOptions: SearchRecipesOptions, populates: IRelationship[] = []): Promise<IRecipe[]> {
         return Recipe.find(sortOptions.filter)
+            .populate(populates)
             .skip(sortOptions.skip)
             .limit(sortOptions.limit)
     }
