@@ -46,5 +46,17 @@ export default gql`
         getRecipe(id: String!): Recipe!
         getRecipes(filter: SortOption!): [Recipe]!
         getSearchRecipes(filter: SearchRecipeFilter!): [Recipe]!
+        
+        "Tìm món ăn theo nguyên liệu"
+        getSearchRecipesByIngredient(name: String!, filter: SortOption!): [Recipe]!
+        
+        "Random recope"
+        getRandomRecipes(size: Int!): [Recipe]!
+        
+    }
+    
+    type Subscription {
+        "Slug món ăn"
+        subRecipe(id: String!): Recipe!
     }
 `

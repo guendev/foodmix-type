@@ -52,10 +52,38 @@ class RecipeService {
                     from: 'users',
                     localField: 'user',
                     foreignField: '_id',
-                    as: 'user'
+                    as: 'user',
+                    pipeline: [
+                        {
+                            $addFields: {
+                                id: '$_id'
+                            }
+                        }
+                    ]
                 }
             },
-            { $unwind: '$user' }
+            { $unwind: '$user' },
+            {
+                $lookup: {
+                    from: 'categories',
+                    localField: 'category',
+                    foreignField: '_id',
+                    as: 'category',
+                    pipeline: [
+                        {
+                            $addFields: {
+                                id: '$_id'
+                            }
+                        }
+                    ]
+                }
+            },
+            { $unwind: '$category' },
+            {
+                $addFields: {
+                    id: '$_id'
+                }
+            }
         ])
     }
 

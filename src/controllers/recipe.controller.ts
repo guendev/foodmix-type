@@ -72,10 +72,9 @@ const getManyReviews = async ({ params, query }: Request, res: Response) => {
 const postReview = async ({ user, params, body }: Request, res: Response): Promise<Response> => {
     let form = {
         content: body.content,
-        totalRating: body.totalRating,
-        user: user!._id,
+        totalRating: body.totalRating
     }
-    return wrapperAPI(() => postReviewAction(params.id, form), res)
+    return wrapperAPI(() => postReviewAction(params.id, user!, form), res)
 }
 
 export default {

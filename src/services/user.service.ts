@@ -1,6 +1,5 @@
 import {IUser, User} from '@models/user'
 import { SortOptions } from "@shared/sort"
-import {IRelationship} from "@shared/relationship";
 
 class UserService {
     constructor() {}
@@ -26,18 +25,22 @@ class UserService {
     }
 
     static async create(input: IUserCreateInput): Promise<IUser> {
-        // const check: IUser = await this.getOne({ email: input.email })
-        // if(check) {
-            // user đã tồn tại
-        // }
-        // validate tại controller
         return User.create(input)
     }
 
     static async update(filter: object, input: IUserUpdateInput) {
-        return User.findOneAndUpdate(filter, input).lean()
+        return User.findOneAndUpdate(filter, input, { returnOriginal: false })
     }
 
+    static async updatePassword(filter: object, hash: String) {
+        return User.findOneAndUpdate(filter, { password: hash }, { returnOriginal: false })
+    }
+
+}
+
+interface IUserUpdatePasswordInput {
+    currentPassword: string
+    newPassword: string
 }
 
 interface IUserCreateInput {
@@ -50,11 +53,11 @@ interface IUserCreateInput {
 
 interface IUserUpdateInput {
     name: string,
-    email: string,
     avatar: string,
     banner: string,
     about: string,
     province: string,
+    gender: number
 }
 
 interface IUserSignInInput {
@@ -66,5 +69,6 @@ export {
     UserService,
     IUserCreateInput,
     IUserUpdateInput,
-    IUserSignInInput
+    IUserSignInInput,
+    IUserUpdatePasswordInput
 }

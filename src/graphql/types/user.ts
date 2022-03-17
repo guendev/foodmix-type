@@ -38,11 +38,28 @@ const userDefs = gql`
         email: String!
         password: String!
     }
+
+    input UserUpdateInput {
+        name: String!
+        avatar: String!
+        banner: String!
+        about: String
+        province: String
+        gender: Int @constraint(min: 1, max: 3)
+    }
+    
+    input UserUpdatePasswordInput {
+        currentPassword: String!
+        newPassword: String!
+    }
     
     type Query {
         me: User
         getUsers(filter: SortOption!): [User]!
+        
         getProfile(id: String!): User!
+        getReviewsProfile(id: String!, filter: SortOption!): [Review]!
+        getRecipesProfile(id: String!, filter: SortOption!): [Recipe]!
     }
     
     type Notify {
@@ -54,12 +71,15 @@ const userDefs = gql`
     type Mutation {
         signup(input: SignUpInput!): Token!
         signin(input: SignInInput!): Token!
+        
+        updateUser(input: UserUpdateInput!): User!
+        updateUserPassword(input: UserUpdatePasswordInput!): User!
     }
     
     type Subscription {
         
         subNotify: Notify
-        
+        subAccount: User!
     }
 `
 export default userDefs

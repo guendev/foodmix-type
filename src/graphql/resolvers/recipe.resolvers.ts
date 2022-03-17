@@ -1,8 +1,13 @@
 import { IResolvers } from '@graphql-tools/utils'
 import {wrapperGraphql} from "@actions/wrapper";
-import {allCategoryAction, oneCategoryAction} from "@actions/query/category.query";
-import { updateCategoryAction } from '@actions/mutations/category.mutation';
-import {manyRecipesAction, recipeAction, searchRecipeAction} from "@actions/query/recipe.query";
+import {
+    manyRecipesAction, randomRecipesAction,
+    recipeAction,
+    searchRecipeAction,
+    searchRecipesByIngredientAction
+} from "@actions/query/recipe.query";
+import {withFilter} from "graphql-subscriptions";
+import {channel, pubsub} from "@graphql/pubsub";
 
 const categoryResolver: IResolvers = {
 
@@ -11,7 +16,24 @@ const categoryResolver: IResolvers = {
 
         getRecipes: async (_, { filter }) => wrapperGraphql(() => manyRecipesAction(filter)),
 
-        getSearchRecipes: async (_, { filter }) => wrapperGraphql(() => searchRecipeAction(filter))
+        getSearchRecipes: async (_, { filter }) => wrapperGraphql(() => searchRecipeAction(filter)),
+
+        getSearchRecipesByIngredient: async (_, { name, filter }) => wrapperGraphql(() => searchRecipesByIngredientAction(name, filter)),
+
+        getRandomRecipes: async (_, { size }) => wrapperGraphql(() => randomRecipesAction(size))
+    },
+
+    Subscription: {
+        subRecipe: {
+            subscribe: withFilter(
+                () => {
+                    return pubsub.asyncIterator(channel.RECIPE)
+                },
+                (payload, variables) => {
+                    return payload.subRecipe.slug == variables.id
+                }
+            )
+        }
     }
 
 }

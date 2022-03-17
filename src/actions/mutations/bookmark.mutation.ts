@@ -20,6 +20,9 @@ export const bookmarkAction = async (slug: string, user: IUser): Promise<IWrappe
     // kieemr da da bookmark hay chua
     const check = await bookmark.exist(recipe)
 
+    // Event update bookcounter
+
+
     if(check) {
         // da ton tai => xoa
         await bookmark.delete(check._id)

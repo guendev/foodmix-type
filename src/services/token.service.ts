@@ -24,7 +24,7 @@ export const readUser = async (token: string): Promise<IUser | undefined> => {
     try {
         const jwtPayload: JWTPayload = readToken(token)
         if (jwtPayload) {
-            const user = await UserService.getOne({ email: (jwtPayload as IUser).email })
+            const user = await UserService.getOne({ email: (jwtPayload as IUser).email }, '')
             if(user != null) {
                 return user
             }

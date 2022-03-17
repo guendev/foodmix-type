@@ -1,11 +1,18 @@
 import StatusCodes from "http-status-codes"
 
-import {IUserCreateInput, IUserSignInInput, UserService} from "@services/user.service"
+import {
+    IUserCreateInput,
+    IUserSignInInput,
+    IUserUpdateInput,
+    IUserUpdatePasswordInput,
+    UserService
+} from "@services/user.service"
 import {IUser} from "@models/user";
 import {createToken} from "@services/token.service"
 import {IWrapperResponse, WrapperError} from "@actions/wrapper"
 import {NotifyResponse} from "@shared/response"
-import {matchPassword} from "@services/password.service"
+import {hashPassword, matchPassword} from "@services/password.service"
+import {channel, pubsub} from "@graphql/pubsub";
 
 const { OK, FORBIDDEN, BAD_REQUEST } = StatusCodes
 
@@ -51,4 +58,47 @@ export const signinAction = async (form: IUserSignInInput): Promise<IWrapperResp
         data: _token,
         msg: "Đăng ký thành công"
     }
+}
+
+export const updateUserAction = async (form: IUserUpdateInput, user: IUser): Promise<IWrapperResponse> => {
+    const updated = await UserService.update({ _id: user._id }, form)
+
+    await Promise.all([
+        pubsub.publish(channel.NOTIFY, { subNotify: { user: updated, msg: 'Cập nhật thành công' } }),
+        pubsub.publish(channel.ACCOUNT, { subAccount: updated })
+    ])
+
+    return {
+        code: NotifyResponse.NOTIFY,
+        data: updated,
+        msg: 'Cập nhật thành công'
+    }
+}
+
+export const updateUserPasswordAction = async (form: IUserUpdatePasswordInput, user: IUser) => {
+
+    const _match = matchPassword(form.currentPassword, user.password)
+    if(!_match) {
+
+        await pubsub.publish(channel.NOTIFY, { subNotify: { user: user, msg: 'Mật khẩu không đúng', error: true } })
+
+        throw new WrapperError({ code: NotifyResponse.NOTIFY, msg: 'Mật khẩu không chính xác', status: BAD_REQUEST })
+    }
+
+    if (form.newPassword.length < 6) {
+        await pubsub.publish(channel.NOTIFY, { subNotify: { user: user, msg: 'Mật khẩu trên 6 ký tự', error: true } })
+
+        throw new WrapperError({ code: NotifyResponse.NOTIFY, msg: 'Mật khẩu trên 6 ký tự', status: BAD_REQUEST })
+    }
+
+    const updated = await UserService.updatePassword({ _id: user._id }, hashPassword(form.newPassword))
+
+    await pubsub.publish(channel.NOTIFY, { subNotify: { user: user, msg: 'Cập nhật thành công' } })
+
+    return {
+        code: NotifyResponse.NOTIFY,
+        data: updated,
+        msg: 'Cập nhật thành công'
+    }
+
 }

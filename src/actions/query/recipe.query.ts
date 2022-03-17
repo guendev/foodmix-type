@@ -57,3 +57,24 @@ export const randomRecipesAction = async (size?: number): Promise<IWrapperRespon
         data: recipes
     }
 }
+
+export const searchRecipesByIngredientAction = async (name: string, _form: ISortOptions): Promise<IWrapperResponse> => {
+    let form: SortOptions = SortOptions.fromJSON(_form)
+    const recipes = await RecipeService.getMany(
+        {
+                "ingredients.name": {
+                    $regex: name,
+                    $options: 'i'
+                }
+              },
+        form,
+        [
+            RecipeService.RELATIONSHIP.CATEGORY,
+            RecipeService.RELATIONSHIP.USER
+        ]
+    )
+
+    return {
+        data: recipes
+    }
+}

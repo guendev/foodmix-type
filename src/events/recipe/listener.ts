@@ -5,7 +5,7 @@ import {IRecipe, Recipe} from "@models/recipe"
 import redis from "@redis"
 import {HistoryService} from "@services/history.service";
 import {IReview} from "@models/review";
-import recipe from "@events/recipe/index";
+import {channel, pubsub} from "@graphql/pubsub";
 
 const view = async (recipe: IRecipe, { user, clientIp }: Request) => {
     if(!clientIp) {
@@ -24,7 +24,9 @@ const view = async (recipe: IRecipe, { user, clientIp }: Request) => {
     // hêt hạn 60s
     await redis.set(key, '1', 'EX', 60)
     // tăng view cho Recipe
-    await Recipe.findByIdAndUpdate(recipe._id, { $inc: { views: 1 } })
+    const updated = await Recipe.findByIdAndUpdate(recipe._id, { $inc: { views: 1 } }, { returnOriginal: false })
+
+    await pubsub.publish(channel.RECIPE, { subRecipe: updated })
 
     if(user){
         // gi lịch sử user
@@ -40,6 +42,13 @@ const rate = async (recipe: IRecipe, review: IReview) => {
             totalRating: review.totalRating
         }
     })
+}
+
+const bookmark = async (recipe: IRecipe, bookmatked: boolean) => {
+    if (bookmatked) {
+        // đã bookmark => huỷ => giảm
+        const updated = await Recipe.findByIdAndUpdate(recipe._id, { $inc: {  } })
+    }
 }
 
 export default {

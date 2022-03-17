@@ -13,7 +13,7 @@ const single = async ({ body, file, user }: Request, res: Response) => {
         if(!file) {
             return res.status(FORBIDDEN).json(new ResponseError('Hình ảnh là bắt buộc', NotifyResponse.NOTIFY))
         }
-        if(!['users'].includes(body.endpoint)) {
+        if(!["user-avatar"].includes(body.endpoint)) {
             Events.upload.removeFile(file.path)
             return res.status(FORBIDDEN).json(new ResponseError('Endpoint không hợp lệ', NotifyResponse.NOTIFY))
         }
@@ -36,6 +36,7 @@ const single = async ({ body, file, user }: Request, res: Response) => {
         Events.upload.removeFile(file.path)
         return res.status(OK).json(new ResponseSuccess(filePath + '/' + fileName, 'Tải lên thành công', NotifyResponse.NOTIFY))
     } catch (_) {
+        console.log(_)
         Events.upload.removeFile(file!.path)
         return res.status(FORBIDDEN).json(new ResponseError('Upload thất bại', NotifyResponse.NOTIFY))
     }
